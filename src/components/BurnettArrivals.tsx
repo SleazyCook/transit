@@ -81,26 +81,26 @@ export default function BurnettArrivals() {
   return (
     <div>
       <h2>Next Northbound Arrivals</h2>
-      <ul>
+      <ul className="arrival-times--list">
         {arrivals.northbound.length === 0 ? (
           <li>- No upcoming arrivals at the moment.</li>
         ) : (
           arrivals.northbound.map((a: Arrival) => (
-            <li key={a.ArrivalId}>
-              {new Date(a.ArrivalTime).toLocaleTimeString()} → {a.DestinationName}
+            <li key={a.ArrivalId} className="arrival-times--time">
+              {new Date(a.ArrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </li>
           ))
         )}
       </ul>
 
       <h2>Next Southbound Arrivals</h2>
-      <ul>
+      <ul className="arrival-times--list">
         {arrivals.southbound.length === 0 ? (
           <li>- No upcoming arrivals at the moment.</li>
         ) : (
           arrivals.southbound.map((a: Arrival) => (
-            <li key={a.ArrivalId}>
-              {new Date(a.ArrivalTime).toLocaleTimeString()} → {a.DestinationName}
+            <li key={a.ArrivalId} className="arrival-times--time">
+              {new Date(a.ArrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </li>
           ))
         )}
