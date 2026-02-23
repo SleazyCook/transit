@@ -1,72 +1,29 @@
 import { useState, useEffect } from "react";
 
-// Minimum refresh interval
-const MIN_REFRESH_MS = 5000;
-
-// Define type for a single arrival
-interface Arrival {
-  ArrivalId: string;
-  LocalArrivalTime: string;
-  DestinationName: string;
-}
-
-// Type for the state holding northbound/southbound arrays
-interface ArrivalsState {
-  northbound: Arrival[];
-  southbound: Arrival[];
-}
-
 export default function BurnettArrivals() {
-  const [arrivals, setArrivals] = useState<ArrivalsState>({
-    northbound: [],
-    southbound: [],
-  });
-  const [loading, setLoading] = useState<boolean>(true);
+  const [arrivals, setArrivals] = useState({ northbound: [], southbound: [] });
+  const [loading, setLoading] = useState(true);
 
-  // The fetch function you asked about
   const fetchArrivals = async () => {
     setLoading(true);
     try {
       const res = await fetch("/.netlify/functions/burnett_arrivals");
-      const data: ArrivalsState = await res.json();
-
-      const now = new Date();
-      const upcoming = (arr: Arrival[]) =>
-        arr
-          .filter(a => new Date(a.LocalArrivalTime) > now)
-          .sort((a, b) => new Date(a.LocalArrivalTime).getTime() - new Date(b.LocalArrivalTime).getTime());
-
-      const newArrivals = {
-        northbound: upcoming(data.northbound),
-        southbound: upcoming(data.southbound),
-      };
-
-      setArrivals(newArrivals);
-
-      // Schedule next fetch based on earliest upcoming arrival
-      const allTimes = [...newArrivals.northbound, ...newArrivals.southbound].map(a => new Date(a.LocalArrivalTime).getTime());
-      let nextRefresh = 15000; // default
-      if (allTimes.length > 0) {
-        const nowMs = Date.now();
-        nextRefresh = Math.max(Math.min(...allTimes) - nowMs, MIN_REFRESH_MS);
-      }
-
-      setTimeout(fetchArrivals, nextRefresh);
-
+      const data = await res.json();
+      setArrivals(data);
     } catch (err) {
-      console.error("Error fetching arrivals:", err);
-      setTimeout(fetchArrivals, 60000); // fallback retry 1 min
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Initial fetch
   useEffect(() => {
     fetchArrivals();
+    const interval = setInterval(fetchArrivals, 15000); // simple 15s refresh
+    return () => clearInterval(interval);
   }, []);
 
-  if (loading) return <p>Loading arrivals...</p>;
+  if (loading) return <p>Loading Burnett Transit Center arrivals...</p>;
 
   return (
     <div>
@@ -75,11 +32,10 @@ export default function BurnettArrivals() {
         {arrivals.northbound.length
           ? arrivals.northbound.map(a => (
               <li key={a.ArrivalId}>
-                {new Date(a.LocalArrivalTime).toLocaleTimeString()} → {a.DestinationName}
+                {new Date(a.ArrivalTime).toLocaleTimeString()} → {a.DestinationName}
               </li>
             ))
-          : <li>- No upcoming arrivals at the moment.</li>
-        }
+          : <li>- No upcoming arrivals at the moment.</li>}
       </ul>
 
       <h2>Next Southbound Arrivals</h2>
@@ -87,11 +43,10 @@ export default function BurnettArrivals() {
         {arrivals.southbound.length
           ? arrivals.southbound.map(a => (
               <li key={a.ArrivalId}>
-                {new Date(a.LocalArrivalTime).toLocaleTimeString()} → {a.DestinationName}
+                {new Date(a.ArrivalTime).toLocaleTimeString()} → {a.DestinationName}
               </li>
             ))
-          : <li>- No upcoming arrivals at the moment.</li>
-        }
+          : <li>- No upcoming arrivals at the moment.</li>}
       </ul>
     </div>
   );
