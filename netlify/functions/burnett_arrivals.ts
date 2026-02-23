@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 type Arrival = {
   ArrivalId: string;
   RouteId: string;
@@ -13,15 +11,12 @@ type ArrivalsState = {
   southbound: Arrival[];
 };
 
-// Burnett stop IDs
 const stops = [
   { key: "northbound", id: "Ho414_4620_25033" },
   { key: "southbound", id: "Ho414_4620_25034" },
 ];
 
 const redLineRouteId = "Ho414_4620_700";
-
-// Minimum refresh interval
 const MIN_REFRESH_MS = 5000;
 
 export async function handler(event: any, context: any) {
@@ -51,7 +46,6 @@ export async function handler(event: any, context: any) {
       const data = await res.json();
       const arrivals: Arrival[] = Array.isArray(data.value) ? data.value : [];
 
-      // Only Red Line and upcoming
       const upcoming = arrivals
         .filter(a => a.RouteId === redLineRouteId && new Date(a.ArrivalTime) > now)
         .sort((a, b) => new Date(a.ArrivalTime).getTime() - new Date(b.ArrivalTime).getTime())
