@@ -37,7 +37,9 @@
 // }
 
 
-const fetch = require("node-fetch"); // required for Node < 20
+// netlify/functions/burnett_arrivals.js
+
+const fetchFn = globalThis.fetch;
 
 const stops = [
   { name: "Northbound", id: "Ho414_4620_25033", key: "northbound" },
@@ -48,49 +50,21 @@ const redLineRouteId = "Ho414_4620_700";
 
 async function fetchBurnett(stopId) {
   const apiKey = process.env.METRO_API_KEY;
-  if (!apiKey) {
-    console.error("❌ METRO_API_KEY is missing!");
-    return [];
-  }
-
-  try {
-    const url = `https://api.ridemetro.org/data/Stops('${stopId}')/Arrivals?$format=json`;
-
-    // Use fetch, fallback to global fetch if available (Node 20+)
-    const _fetch = globalThis.fetch || fetch;
-
-    const res = await _fetch(url, {
-      headers: { "Ocp-Apim-Subscription-Key": apiKey }
-    });
-
-    if (!res.ok) {
-      console.error(`HTTP error for stop ${stopId}:`, res.status, res.statusText);
-      return [];
-    }
-
-    const data = await res.json();
-    const now = new Date();
-
-    return (Array.isArray(data.value) ? data.value : [])
-      .filter(a => a.RouteId === redLineRouteId && new Date(a.ArrivalTime) > now)
-      .sort((a, b) => new Date(a.ArrivalTime) - new Date(b.ArrivalTime))
-      .slice(0, 4);
-
-  } catch (err) {
-    console.error(`Fetch error for stop ${stopId}:`, err);
-    return [];
-  }
+  const res = await fetchFn(`https://api.ridemetro.org/data/Stops('${stopId}')/Arrivals?$format=json`, {
+    headers: { "Ocp-Apim-Subscription-Key": apiKey }
+  });
+  const data = await res.json();
+  const now = new Date();
+  return (Array.isArray(data.value) ? data.value : [])
+    .filter(a => a.RouteId === redLineRouteId && new Date(a.ArrivalTime) > now)
+    .sort((a, b) => new Date(a.ArrivalTime) - new Date(b.ArrivalTime))
+    .slice(0, 4);
 }
 
 exports.handler = async function () {
   const result = { northbound: [], southbound: [] };
-
   for (const stop of stops) {
     result[stop.key] = await fetchBurnett(stop.id);
   }
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify(result)
-  };
+  return { statusCode: 200, body: JSON.stringify(result) };
 };
