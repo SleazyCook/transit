@@ -8,6 +8,3 @@
 
 [functions.environment]
   NODE_OPTIONS = "--experimental-fetch"
-
-[context.production.environment]
-  METRO_API_KEY = "<your key>"

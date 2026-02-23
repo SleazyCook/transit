@@ -39,32 +39,38 @@
 
 // netlify/functions/burnett_arrivals.js
 
-const fetchFn = globalThis.fetch;
+// burnett_arrivals.mjs
 
 const stops = [
-  { name: "Northbound", id: "Ho414_4620_25033", key: "northbound" },
-  { name: "Southbound", id: "Ho414_4620_25034", key: "southbound" }
+  { name: "Northbound", key: "northbound", id: "Ho414_4620_25033" },
+  { name: "Southbound", key: "southbound", id: "Ho414_4620_25034" }
 ];
 
 const redLineRouteId = "Ho414_4620_700";
 
-async function fetchBurnett(stopId) {
-  const apiKey = process.env.METRO_API_KEY;
-  const res = await fetchFn(`https://api.ridemetro.org/data/Stops('${stopId}')/Arrivals?$format=json`, {
-    headers: { "Ocp-Apim-Subscription-Key": apiKey }
-  });
-  const data = await res.json();
-  const now = new Date();
-  return (Array.isArray(data.value) ? data.value : [])
-    .filter(a => a.RouteId === redLineRouteId && new Date(a.ArrivalTime) > now)
-    .sort((a, b) => new Date(a.ArrivalTime) - new Date(b.ArrivalTime))
-    .slice(0, 4);
-}
-
-exports.handler = async function () {
+export async function handler() {
   const result = { northbound: [], southbound: [] };
+  const apiKey = process.env.METRO_API_KEY;
+
   for (const stop of stops) {
-    result[stop.key] = await fetchBurnett(stop.id);
+    try {
+      const res = await fetch(`https://api.ridemetro.org/data/Stops('${stop.id}')/Arrivals?$format=json`, {
+        headers: { "Ocp-Apim-Subscription-Key": apiKey }
+      });
+      const data = await res.json();
+      const now = new Date();
+      const arrivalsArray = Array.isArray(data.value) ? data.value : [];
+      result[stop.key] = arrivalsArray
+        .filter(a => a.RouteId === redLineRouteId && new Date(a.ArrivalTime) > now)
+        .sort((a, b) => new Date(a.ArrivalTime) - new Date(b.ArrivalTime))
+        .slice(0, 4);
+    } catch (err) {
+      console.error(`Error fetching ${stop.name} arrivals:`, err);
+    }
   }
-  return { statusCode: 200, body: JSON.stringify(result) };
-};
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result)
+  };
+}
