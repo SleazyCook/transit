@@ -36,7 +36,7 @@
 //   };
 // }
 
-// netlify/functions/burnett_arrivals.js
+
 const fetch = require("node-fetch"); // required for Node < 20
 
 const stops = [
