@@ -39,7 +39,7 @@ const redline_stations = [
     address: "https://maps.google.com/?q=367%20Main%20St.,%20Houston,%20TX%2077002",
     bike_parking: true
    },
-  { name: "Central Station Main (Transfer to Green/Purple Lines)",
+  { name: "Central Station Main",
     address: "https://maps.google.com/?q=714%20Main%20St.,%20Houston,%20TX%2077002",
     bike_parking: true,
     connections: ["green", "purple"]

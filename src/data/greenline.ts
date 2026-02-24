@@ -10,7 +10,7 @@ const greenline_stations = [
     address: "https://maps.google.com/?q=550%20Rusk%20St.,%20Houston,%20TX%2077002",
     connections: ["purple"]
    },
-  { name: "Central Station Rusk/Capitol",
+  { name: "Central Station",
     address: "https://maps.google.com/?q=1110%20Rusk%20St.,%20Houston,%20TX%2077002",
     connections: ["purple", "red"]
    },

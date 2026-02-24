@@ -6,15 +6,15 @@ export interface Station {
 }
 
 const purpleline_stations: Station[] = [
-  { name: "Theater District (Rusk/Capitol)",
+  { name: "Theater District",
     address: "https://maps.google.com/?q=550%20Rusk%20St.,%20Houston,%20TX%2077002",
     connections: ["green"]
    },
-  { name: "Central Station (Rusk/Capitol)",
+  { name: "Central Station",
     address: "https://maps.google.com/?q=1110%20Rusk%20St.,%20Houston,%20TX%2077002",
     connections: ["red", "green"]
    },
-  { name: "Convention District (Rusk/Capitol)",
+  { name: "Convention District",
     address: "https://maps.google.com/?q=1635%20Rusk%20St.,%20Houston,%20TX%2077002",
     connections: ["green"]
    },
