@@ -124,3 +124,29 @@
 .stations--purple .stop::after {
   box-shadow: 0 0 0 var(--dot-border) var(--color-purpleline);
 }
+
+.transit-line--btn {
+
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  padding: 1rem;
+  border-right: 1px solid white;
+  color: white;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 20px;
+
+}
+
+.transit-line--btn-red {
+  background-color: var(--color-redline);
+}
+.transit-line--btn-green {
+  background-color: var(--color-greenline);
+}
+.transit-line--btn-purple {
+  background-color: var(--color-purpleline);
+}

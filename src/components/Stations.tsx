@@ -1,4 +1,8 @@
 import { useState } from "react";
+
+// Icons
+import { IoIosTrain } from "react-icons/io";
+
 import redline_stations from "../data/redline";
 import greenline_stations from "../data/greenline";
 import purpleline_stations from "../data/purpleline";
@@ -21,10 +25,10 @@ const Stations = () => {
       <div id="content">
         <h1>{currentLine} Line Stations</h1>
 
-        <div>
-          <button onClick={() => setCurrentLine("Red")}>Red</button>
-          <button onClick={() => setCurrentLine("Green")}>Green</button>
-          <button onClick={() => setCurrentLine("Purple")}>Purple</button>
+        <div className="transit-line--btn-box">
+          <button className="transit-line--btn transit-line--btn-red" onClick={() => setCurrentLine("Red")}>Red</button>
+          <button className="transit-line--btn transit-line--btn-green" onClick={() => setCurrentLine("Green")}>Green</button>
+          <button className="transit-line--btn transit-line--btn-purple" onClick={() => setCurrentLine("Purple")}>Purple</button>
         </div>
 
         <ul className={`stations stations--${currentLine.toLowerCase()}`}>
