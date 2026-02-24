@@ -15,7 +15,6 @@ type Line = "Red" | "Green" | "Purple";
 
 const Stations = () => {
   const [currentLine, setCurrentLine] = useState<Line>("Red");
-  const [activeStationIndex, setActiveStationIndex] = useState<number | null>(null);
 
   // Decide which stations to show based on current line
   const stations =
@@ -38,17 +37,13 @@ const Stations = () => {
 
         <ul className={`stations stations--${currentLine.toLowerCase()}`}>
           {stations.map((station, index) => {
-            const isActive = activeStationIndex === index;
             return(
               <li key={index} className="stop">
                 <h3
-                  // onClick={() => 
-                  //   setActiveStationIndex(isActive ? null : index)
-                  // }
                   style={{ cursor: "pointer" }}
                   >
                     {station.name}
-                    <span className={`chevron ${isActive ? "rotate" : ""}`}><MdOutlineKeyboardArrowDown /></span>
+                    {/* <span className={`chevron ${isActive ? "rotate" : ""}`}><MdOutlineKeyboardArrowDown /></span> */}
                 </h3>
                   <div className="station-details">
                     {station.address && (<p className="station-detail"><span><LuMapPin /></span><a href={station.address} target="_blank">View on Map</a></p>)}
