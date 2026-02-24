@@ -1,0 +1,16 @@
+.arrivals {
+    border: 1px solid black;
+    max-width: 700px;
+    margin: 0 auto;
+    height: 178px;
+}
+
+.arrivals h2 {
+    text-align: center;
+}
+
+.arrivals-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

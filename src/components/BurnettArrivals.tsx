@@ -79,32 +79,41 @@ export default function BurnettArrivals() {
   if (loading) return <p>Loading Burnett Transit Center arrivals...</p>;
 
   return (
-    <div>
-      <h2>Next Northbound Arrivals</h2>
+    <div className="arrivals">
+      {/* Station Name */}
+      <h2>Burnett Transit Center</h2>
+
+      <div className="arrivals-flex">
+
+      {/* <h2>Next Northbound Arrivals</h2> */}
       <ul className="arrival-times--list">
         {arrivals.northbound.length === 0 ? (
           <li>- No upcoming arrivals at the moment.</li>
         ) : (
           arrivals.northbound.map((a: Arrival) => (
             <li key={a.ArrivalId} className="arrival-times--time">
-              {new Date(a.ArrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {new Date(a.ArrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} 
+              &nbsp;NORTH
             </li>
           ))
         )}
       </ul>
 
-      <h2>Next Southbound Arrivals</h2>
+      {/* <h2>Next Southbound Arrivals</h2> */}
       <ul className="arrival-times--list">
         {arrivals.southbound.length === 0 ? (
           <li>- No upcoming arrivals at the moment.</li>
         ) : (
           arrivals.southbound.map((a: Arrival) => (
             <li key={a.ArrivalId} className="arrival-times--time">
-              {new Date(a.ArrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {new Date(a.ArrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} 
+              &nbsp;SOUTH
             </li>
           ))
         )}
       </ul>
+
+      </div>
     </div>
   );
 }

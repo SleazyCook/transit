@@ -21,6 +21,7 @@
 
   --font-title: 'Oswald', sans-serif;
   --font-text: 'Source Sans Pro', sans-serif;
+  transition: all 1s;
 }
 
 /* Base */
@@ -47,6 +48,7 @@
   text-align: left;
   font-weight: 100;
   max-width: 30%;
+  transition: all .3s;
 }
 
 .stations h1,
@@ -180,19 +182,65 @@
   margin-right: 3.5px;
 }
 
-/* When active */
-.stop.active .station-details {
-  max-height: 500px; 
-  opacity: 1;
-  transform: translateY(0);
+/* View More BTN */
+.view-north-btn {
+  background: transparent;
+  border: 2px solid currentColor;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
 }
 
-.chevron {
+.view-north-btn:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+/* STATION SELECTOR */
+.accordion_menus {
+  margin-left:15%;
+  background: #5ab2ca;
+  width: 65%;
+  min-width: 800px;
+  overflow: hidden;
+  height: 200px;
+  font-size: 0;
+}
+
+.accordion {
   display: inline-block;
-  margin-left: 8px;
-  transition: transform 0.3s ease;
+  background-color: #6dc5dd;
+  border-right: #5ab2ca 1px solid;
+  width: 80px;
+  overflow: hidden;
+  position: relative;
+  margin: 0;
+  font-size: 16px;
+  transition: all 0.4s ease-in-out 0.1s;
+}
+.accordion--red {
+
+}
+.accordion--green {
+
+}
+.accordion--purple {
+
 }
 
-.chevron.rotate {
-  transform: rotate(180deg);
+.accordion:hover {
+  wideth: 450px;
+}
+
+.accordion_open {
+  position: relative;
+  width: 360px;
+  margin-left: 80px;
+  padding: 10px 0 0 10px;
+  height: 200px;
+  background: #fff;
+}
+.accordion_closed {
+
 }

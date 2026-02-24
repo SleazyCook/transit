@@ -1,4 +1,5 @@
-import './App.css'
+import './styles/app.css'
+import './styles/arrivals.css'
 import './styles/stations.css'
 
 import Header from './components/Header.tsx'
