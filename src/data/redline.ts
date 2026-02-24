@@ -3,6 +3,7 @@ export interface Station {
   address: string;
   bike_parking?: boolean;
   connections?: string[];
+  nearby?: string[];
 }
 
 const redline_stations = [
@@ -30,7 +31,8 @@ const redline_stations = [
    },
   { name: "Burnett Transit Center / Casa de Amigos",
     address: "https://maps.google.com/?q=1460%20N%20Main%20St.,%20Houston,%20TX%2077009",
-    bike_parking: true
+    bike_parking: true,
+    nearby: ["Bad Astronaut Brewing Co.", "Poppa Burger"]
   },
   { name: "UH-Downtown",
     address: "https://maps.google.com/?q=6%20North%20Main%20St.,%20Houston,%20TX%2077002",

@@ -3,6 +3,7 @@ export interface Station {
   address: string;
   bike_parking?: boolean;
   connections?: string[];
+  nearby?: string[];
 }
 
 const greenline_stations = [

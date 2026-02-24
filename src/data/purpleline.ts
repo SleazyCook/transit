@@ -3,6 +3,7 @@ export interface Station {
   address: string;
   bike_parking?: boolean;
   connections?: string[];
+  nearby?: string[];
 }
 
 const purpleline_stations: Station[] = [
@@ -12,7 +13,7 @@ const purpleline_stations: Station[] = [
    },
   { name: "Central Station",
     address: "https://maps.google.com/?q=1110%20Rusk%20St.,%20Houston,%20TX%2077002",
-    connections: ["red", "Green Line"]
+    connections: ["Red Line", "Green Line"]
    },
   { name: "Convention District",
     address: "https://maps.google.com/?q=1635%20Rusk%20St.,%20Houston,%20TX%2077002",
