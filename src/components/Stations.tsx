@@ -42,12 +42,19 @@ const Stations = () => {
 
         {/* <StationSelector /> */}
 
+        {/* Stations Map */}
+        <ul className={`
+          stations 
+          stations--${currentLine.toLowerCase()}
+          ${currentLine === "Red" && !showNorthStations ? "stations--view-more" : ""}`}>
+
         {/* View More -- RED LINE ONLY */}
         {(currentLine === "Red" && !showNorthStations ) && 
           (<>
             <div className="view-north-btn--container">
               <button 
                 className="view-north-btn"
+                id="btn--18"
                 onClick={() => {
                   setShowNorthStations(prev => !prev);
                 }}
@@ -57,53 +64,46 @@ const Stations = () => {
             </div>
           </>
         )}
-
-        {/* Stations Map */}
-        <ul className={`
-          stations 
-          stations--${currentLine.toLowerCase()}
-          ${currentLine === "Red" && !showNorthStations ? "stations--view-more" : ""}`}>
-          {stations.map((station, index) => {
-            return(
-              <>
-
-                <li key={index} className="stop">
-                  {/* Station Name */}
-                  <h3
-                    style={{ cursor: "pointer" }}
-                    >
-                      {station.name}
-                  </h3>
-                    {/* Station Details */}
-                    <div className="station-details">
-                      {station.address && (<p className="station-detail"><span><LuMapPin /></span><a href={station.address} target="_blank">View on Map</a></p>)}
-                      {station.connections && <p className="station-detail"><span><FaTrain /></span>
-                        Connections:{" "}
-                        {Array.isArray(station.connections)
-                          ? station.connections.join(", ")
-                          : station.connections}
-                      </p>}
-                      {station.bike_parking && (<p className="station-detail"><span><MdOutlinePedalBike /></span>Bike Parking Available</p>)}
-                      {station.nearby && (
-                        <div className="station-nearby">
-                          <p className="station-detail nearby-title">
-                            <FaPersonWalking className="detail-icon" />
-                              Popular Destinations
-                          </p>
-                          <ul>
-                          {station.nearby?.map((spot, index) => (
-                            <li key={index} className="station-detail nearby-item">
-                              {spot}
-                            </li>
-                          ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                </li>
-              </>
-            );
-          })}
+        {stations.map((station, index) => {
+          return(
+            <>
+              <li key={index} className="stop">
+                {/* Station Name */}
+                <h3
+                  style={{ cursor: "pointer" }}
+                  >
+                    {station.name}
+                </h3>
+                  {/* Station Details */}
+                  <div className="station-details">
+                    {station.address && (<p className="station-detail"><span><LuMapPin /></span><a href={station.address} target="_blank">View on Map</a></p>)}
+                    {station.connections && <p className="station-detail"><span><FaTrain /></span>
+                      Connections:{" "}
+                      {Array.isArray(station.connections)
+                        ? station.connections.join(", ")
+                        : station.connections}
+                    </p>}
+                    {station.bike_parking && (<p className="station-detail"><span><MdOutlinePedalBike /></span>Bike Parking Available</p>)}
+                    {station.nearby && (
+                      <div className="station-nearby">
+                        <p className="station-detail nearby-title">
+                          <FaPersonWalking className="detail-icon" />
+                            Popular Destinations
+                        </p>
+                        <ul>
+                        {station.nearby?.map((spot, index) => (
+                          <li key={index} className="station-detail nearby-item">
+                            {spot}
+                          </li>
+                        ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+              </li>
+            </>
+          );
+        })}
         </ul>
     </div>
   );
