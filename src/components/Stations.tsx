@@ -1,8 +1,5 @@
 import { useState } from "react";
 
-// Icons
-import { IoIosTrain } from "react-icons/io";
-
 import redline_stations from "../data/redline";
 import greenline_stations from "../data/greenline";
 import purpleline_stations from "../data/purpleline";
