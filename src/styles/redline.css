@@ -1,0 +1,103 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700|Oswald:400,300,700');
+
+/* CSS Variables */
+.transit-line {
+  --background: #252827;
+
+  --color-primary: #D80926;
+  --color-light: #ffffff;
+  --spacing: 50px;
+  --radius: 4px;
+
+  --date-width: 120px;
+  --dot-border: 4px;
+  --dot-size: 11px;
+  --line-width: 4px;
+
+  --font-title: 'Oswald', sans-serif;
+  --font-text: 'Source Sans Pro', sans-serif;
+}
+
+/* Base */
+#content {
+  margin-top: var(--spacing);
+  text-align: center;
+}
+
+/* Timeline */
+.timeline {
+  border-left: var(--line-width) solid var(--color-primary);
+  border-bottom-right-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.03); /* fade(@color-light, 3%) */
+
+  font-family: var(--font-text);
+  margin: var(--spacing) auto;
+  letter-spacing: 0.5px;
+  position: relative;
+  line-height: 1.4em;
+  font-size: 1.03em;
+  padding: var(--spacing);
+  list-style: none;
+  text-align: left;
+  font-weight: 100;
+  max-width: 30%;
+}
+
+.timeline h1,
+.timeline h2,
+.timeline h3 {
+  font-family: var(--font-title);
+  letter-spacing: 1.5px;
+  font-weight: 100;
+  font-size: 1.4em;
+}
+
+.timeline .event {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1); /* fade(@color-light, 10%) */
+  padding-bottom: calc(var(--spacing) * 0.5);
+  margin-bottom: var(--spacing);
+  position: relative;
+}
+
+.timeline .event:last-of-type {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border: none;
+}
+
+/* Event pseudo-elements */
+.timeline .event::before,
+.timeline .event::after {
+  position: absolute;
+  display: block;
+  top: 0;
+}
+
+.timeline .event::before {
+  left: calc(
+    -1 * (
+      ((var(--date-width) * 0.6) + var(--spacing) + var(--line-width) + var(--dot-size) + (var(--dot-border) * 2))
+      * 1.5
+    )
+  );
+  color: rgba(255, 255, 255, 0.4); /* fade(@color-light, 40%) */
+  content: attr(data-date);
+  text-align: right;
+  font-weight: 100;
+  font-size: 0.9em;
+  min-width: var(--date-width);
+}
+
+.timeline .event::after {
+  box-shadow: 0 0 0 var(--dot-border) var(--color-primary);
+  left: calc(-1 * (var(--spacing) + var(--line-width) + (var(--dot-size) * 0.35)));
+  background: white;
+  /* lighten(@background, 5%) approximation */
+  border-radius: 50%;
+  height: var(--dot-size);
+  width: var(--dot-size);
+  content: "";
+  top: 5px;
+}
