@@ -40,11 +40,11 @@ const Stations = () => {
           {stations.map((station, index) => {
             const isActive = activeStationIndex === index;
             return(
-              <li key={index} className={`stop ${isActive ? "active" : ""}`}>
+              <li key={index} className="stop">
                 <h3
-                  onClick={() => 
-                    setActiveStationIndex(isActive ? null : index)
-                  }
+                  // onClick={() => 
+                  //   setActiveStationIndex(isActive ? null : index)
+                  // }
                   style={{ cursor: "pointer" }}
                   >
                     {station.name}
