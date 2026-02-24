@@ -24,6 +24,8 @@
   transition: all 1s;
 }
 
+
+
 /* Base */
 #content {
   margin-top: var(--spacing);
@@ -149,20 +151,31 @@
   box-shadow: 0 0 0 var(--dot-border) var(--color-purpleline);
 }
 
-.transit-line--btn {
+.transit-line--btn-box {
+  margin-left: var(--spacing);
+  margin-right: var(--spacing);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.transit-line--btn {
   margin: 0;
   font: inherit;
   color: inherit;
   cursor: pointer;
   border: none;
   padding: 1rem;
-  border-right: 1px solid white;
+  /* border-right: 1px solid white; */
   color: white;
   font-family: var(--font-title);
   font-weight: 400;
   font-size: 20px;
+  flex: 1;
+}
 
+.transit-line--btn:not(:last-of-type) {
+  border-right: 2px solid white;
 }
 
 .transit-line--btn-red {
@@ -205,7 +218,7 @@
 }
 
 /* STATION SELECTOR */
-.accordion_menus {
+/* .accordion_menus {
   margin-left:15%;
   background: #5ab2ca;
   width: 65%;
@@ -250,4 +263,14 @@
 }
 .accordion_closed {
 
+} */
+
+@media (max-width: 800px) {
+  .transit-line {
+    --spacing: 25px;
+  }
+
+  .stations {
+    max-width: 65%;
+  }
 }
