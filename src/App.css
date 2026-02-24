@@ -8,11 +8,17 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 .logo {
-  height: 6em;
+  max-width: 25em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
   background-color: white;
+}
+
+@media (max-height: 800px) {
+  .logo {
+    max-width: 100%;
+  }
 }
 /* .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
