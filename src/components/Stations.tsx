@@ -37,7 +37,7 @@ const Stations = () => {
         <div className="transit-line--btn-box">
           <button className="transit-line--btn transit-line--btn-red" onClick={() => setCurrentLine("Red")}>Red</button>
           <button className="transit-line--btn transit-line--btn-green" onClick={() => { setCurrentLine("Green"); setShowNorthStations(false); }}>Green</button>
-          <button className="transit-line--btn transit-line--btn-purple" onClick={() => setCurrentLine("Purple")}>Purple</button>
+          <button className="transit-line--btn transit-line--btn-purple" onClick={() => { setCurrentLine("Purple"); setShowNorthStations(false); }}>Purple</button>
         </div>
 
         {/* <StationSelector /> */}
@@ -48,7 +48,9 @@ const Stations = () => {
             <div className="view-north-btn--container">
               <button 
                 className="view-north-btn"
-                onClick={() => setShowNorthStations(prev => !prev)}
+                onClick={() => {
+                  setShowNorthStations(prev => !prev);
+                }}
               >
                 {showNorthStations ? "Hide North Stations" : "View North Stations"}
               </button>
@@ -57,7 +59,10 @@ const Stations = () => {
         )}
 
         {/* Stations Map */}
-        <ul className={`stations stations--${currentLine.toLowerCase()}`}>
+        <ul className={`
+          stations 
+          stations--${currentLine.toLowerCase()}
+          ${currentLine === "Red" && !showNorthStations ? "stations--view-more" : ""}`}>
           {stations.map((station, index) => {
             return(
               <>

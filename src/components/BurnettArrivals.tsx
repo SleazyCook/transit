@@ -76,7 +76,8 @@ export default function BurnettArrivals() {
     fetchArrivals();
   }, []);
 
-  if (loading) return <p>Loading Burnett Transit Center arrivals...</p>;
+  if (loading) return <div className="arrivals">
+      <p>Loading Burnett Transit Center arrivals...</p></div>;
 
   return (
     <div className="arrivals">

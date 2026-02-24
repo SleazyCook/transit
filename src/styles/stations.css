@@ -39,6 +39,8 @@
 
   font-family: var(--font-text);
   margin: var(--spacing) auto;
+
+  margin-top: 0;
   letter-spacing: 0.5px;
   position: relative;
   line-height: 1.4em;
@@ -48,7 +50,27 @@
   text-align: left;
   font-weight: 100;
   max-width: 30%;
-  transition: all .3s;
+  /* transition: all .3s; */
+}
+
+/* View More BTN */
+.view-north-btn {
+  background: transparent;
+  /* border: 2px solid currentColor; */
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.view-north-btn:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.stations--view-more {
+  border-top: 4px solid var(--color-redline);
 }
 
 .stations h1,
@@ -180,21 +202,6 @@
 }
 .station-detail svg {
   margin-right: 3.5px;
-}
-
-/* View More BTN */
-.view-north-btn {
-  background: transparent;
-  border: 2px solid currentColor;
-  padding: 8px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s ease;
-}
-
-.view-north-btn:hover {
-  background: rgba(0,0,0,0.05);
 }
 
 /* STATION SELECTOR */
