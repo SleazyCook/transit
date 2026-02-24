@@ -3,7 +3,7 @@ export interface Station {
   address: string;
   bike_parking?: boolean;
   connections?: string[];
-  nearby?: string[];
+  naerby?: [""]
 }
 
 const greenline_stations = [
@@ -22,7 +22,8 @@ const greenline_stations = [
   { name: "EaDo/Stadium",
     address: "https://maps.google.com/?q=2229%20Texas%20Ave.,%20Houston,%20TX%2077003",
     bike_parking: true,
-    connections: ["Purple Line"]
+    connections: ["Purple Line"],
+    nearby: ["Shell Stadium"]
    },
   { name: "Coffee Plant/Second Ward",
     address: "https://maps.google.com/?q=3518%20Harrisburg%20Blvd.,%20Houston,%20TX%2077003"

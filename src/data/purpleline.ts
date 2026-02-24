@@ -21,7 +21,8 @@ const purpleline_stations: Station[] = [
    },
   { name: "EaDo/Stadium",
     address: "https://maps.google.com/?q=2229%20Texas%20Ave.,%20Houston,%20TX%2077003",
-    bike_parking: true
+    bike_parking: true,
+    nearby: ["Shell Stadium"]
    },
   { name: "Leeland/Third Ward",
     address: "https://maps.google.com/?q=1506%20Scott%20St.,%20Houston,%20TX%2077003"

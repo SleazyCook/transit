@@ -59,14 +59,14 @@ const Stations = () => {
                         : station.connections}
                     </p>}
                     {station.bike_parking && (<p className="station-detail"><span><MdOutlinePedalBike /></span>Bike Parking Available</p>)}
-                    {station.nearby?.length > 0 && (
+                    {station.nearby && (
                       <div className="station-nearby">
                         <p className="station-detail nearby-title">
                           <FaPersonWalking className="detail-icon" />
                             Popular Destinations
                         </p>
                         <ul>
-                        {station.nearby.map((spot, index) => (
+                        {station.nearby?.map((spot, index) => (
                           <li key={index} className="station-detail nearby-item">
                             {spot}
                           </li>
