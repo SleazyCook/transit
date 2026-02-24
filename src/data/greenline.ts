@@ -8,20 +8,20 @@ export interface Station {
 const greenline_stations = [
   { name: "Theater District",
     address: "https://maps.google.com/?q=550%20Rusk%20St.,%20Houston,%20TX%2077002",
-    connections: ["purple"]
+    connections: ["Purple Line Line"]
    },
   { name: "Central Station",
     address: "https://maps.google.com/?q=1110%20Rusk%20St.,%20Houston,%20TX%2077002",
-    connections: ["purple", "red"]
+    connections: ["Purple Line", "Red Line"]
    },
   { name: "Convention District",
     address: "https://maps.google.com/?q=1635%20Rusk%20St.,%20Houston,%20TX%2077002",
-    connections: "purple"
+    connections: "Purple Line"
    },
   { name: "EaDo/Stadium",
     address: "https://maps.google.com/?q=2229%20Texas%20Ave.,%20Houston,%20TX%2077003",
     bike_parking: true,
-    connections: ["purple"]
+    connections: ["Purple Line"]
    },
   { name: "Coffee Plant/Second Ward",
     address: "https://maps.google.com/?q=3518%20Harrisburg%20Blvd.,%20Houston,%20TX%2077003"

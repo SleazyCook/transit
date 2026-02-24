@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+// external
+import { LuMapPin } from "react-icons/lu";
+import { FaTrain } from "react-icons/fa6";
+import { MdOutlinePedalBike } from "react-icons/md";
+
 import redline_stations from "../data/redline";
 import greenline_stations from "../data/greenline";
 import purpleline_stations from "../data/purpleline";
@@ -8,6 +13,7 @@ type Line = "Red" | "Green" | "Purple";
 
 const Stations = () => {
   const [currentLine, setCurrentLine] = useState<Line>("Red");
+  const [activeStationIndex, setActiveStationIndex] = useState<number | null>(null);
 
   // Decide which stations to show based on current line
   const stations =
@@ -29,11 +35,32 @@ const Stations = () => {
         </div>
 
         <ul className={`stations stations--${currentLine.toLowerCase()}`}>
-          {stations.map((station, index) => (
-            <li key={index} className="stop">
-              <h3>{station.name}</h3>
-            </li>
-          ))}
+          {stations.map((station, index) => {
+            const isActive = activeStationIndex === index;
+            return(
+              <li key={index} className="stop">
+                <h3
+                  onClick={() => 
+                    setActiveStationIndex(isActive ? null : index)
+                  }
+                  style={{ cursor: "pointer" }}
+                  >
+                    {station.name}</h3>
+                {isActive && (
+                  <div className="station-details">
+                    {station.address && (<p className="station-detail"><span><LuMapPin /></span><a href={station.address} target="_blank">View on Map</a></p>)}
+                    {station.connections && <p className="station-detail"><span><FaTrain /></span>
+                      Connections:{" "}
+                      {Array.isArray(station.connections)
+                        ? station.connections.join(", ")
+                        : station.connections}
+                    </p>}
+                    {station.bike_parking && (<p className="station-detail"><span><MdOutlinePedalBike /></span>Bike Parking Available</p>)}
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

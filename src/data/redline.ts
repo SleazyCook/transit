@@ -42,7 +42,7 @@ const redline_stations = [
   { name: "Central Station Main",
     address: "https://maps.google.com/?q=714%20Main%20St.,%20Houston,%20TX%2077002",
     bike_parking: true,
-    connections: ["green", "purple"]
+    connections: ["Green Line", "Purple Line"]
    },
   { name: "Main Street Square",
     address: "https://maps.google.com/?q=960%20Main%20St.,%20Houston,%20TX%2077002",
@@ -81,7 +81,7 @@ const redline_stations = [
     address: "https://maps.google.com/?q=6934%20Fannin%20St.,%20Houston,%20TX%2077030"
    },
   { name: "Smith Lands",
-    address: "https://maps.google.com/?q=7834%20Greenbriar%20Drive,%20Houston,%20TX%2077054"
+    address: "https://maps.google.com/?q=7834%20Green Linebriar%20Drive,%20Houston,%20TX%2077054"
    },
   { name: "Stadium Park/Astrodome",
     address: "https://maps.google.com/?q=8168%20Fannin%20St.,%20Houston,%20TX%2077054"
