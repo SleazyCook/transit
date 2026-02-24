@@ -13,4 +13,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 1rem;
+}
+
+.arrival-times--list {
+    padding: 0;
+}
+
+@media (max-width: 500px) {
+    .arrivals {
+        height: 230px;
+    }
+    .arrivals h2 {
+        margin-bottom: 0;
+        font-size: 16px;
+    }
+    .arrivals-flex {
+        display: block;
+    }
 }
