@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 // external
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { LuMapPin } from "react-icons/lu";
 import { FaTrain } from "react-icons/fa6";
 import { MdOutlinePedalBike } from "react-icons/md";
