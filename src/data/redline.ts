@@ -4,11 +4,15 @@ export interface Station {
   bike_parking?: boolean;
   connections?: string[];
   nearby?: string[];
+  lat?: number;
+  lng?: number;
 }
 
 const redline_stations = [
   { name: "Northline Transit Center/HCC",
-    address: "https://maps.google.com/?q=7850%20Fulton%20St.,%20Houston,%20TX%2077022"
+    address: "https://maps.google.com/?q=7850%20Fulton%20St.,%20Houston,%20TX%2077022",
+    lat: 29.8438,
+    lng: -95.3736
   },
   { name: "Melbourne/North Lindale",
     address: "https://maps.google.com/?q=6321%20Fulton%20St.,%20Houston,%20TX%2077022"

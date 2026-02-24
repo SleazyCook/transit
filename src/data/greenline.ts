@@ -39,7 +39,9 @@ const greenline_stations = [
    },
   { name: "Magnolia Park Transit Center",
     address: "https://maps.google.com/?q=6948%20Harrisburg%20Blvd.,%20Houston,%20TX%2077011",
-    bike_parking: true
+    bike_parking: true,
+    lat: 29.735889,
+    lng: -95.302889
    }
 ];
 

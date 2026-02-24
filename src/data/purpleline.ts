@@ -4,12 +4,16 @@ export interface Station {
   bike_parking?: boolean;
   connections?: string[];
   nearby?: string[];
+  lat?: number;
+  lng?: number;
 }
 
 const purpleline_stations: Station[] = [
   { name: "Theater District",
     address: "https://maps.google.com/?q=550%20Rusk%20St.,%20Houston,%20TX%2077002",
-    connections: ["Green Line"]
+    connections: ["Green Line"],
+    lat: 29.7609,
+    lng: -95.3669,
    },
   { name: "Central Station",
     address: "https://maps.google.com/?q=1110%20Rusk%20St.,%20Houston,%20TX%2077002",
