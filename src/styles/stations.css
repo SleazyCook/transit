@@ -6,6 +6,10 @@
   --background: #252827;
 
   --color-primary: #D80926;
+  --color-redline: #D80926;
+  --color-greenline: #6A7C1B;
+  --color-purpleline: #603353;
+
   --color-light: #ffffff;
   --spacing: 50px;
   --radius: 4px;
@@ -25,9 +29,9 @@
   text-align: center;
 }
 
-/* Timeline */
-.timeline {
-  border-left: var(--line-width) solid var(--color-primary);
+/* stations */
+.stations {
+  /* border-left: var(--line-width) solid var(--color-primary); */
   border-bottom-right-radius: var(--radius);
   border-top-right-radius: var(--radius);
   background: rgba(255, 255, 255, 0.03); /* fade(@color-light, 3%) */
@@ -45,37 +49,37 @@
   max-width: 30%;
 }
 
-.timeline h1,
-.timeline h2,
-.timeline h3 {
+.stations h1,
+.stations h2,
+.stations h3 {
   font-family: var(--font-title);
   letter-spacing: 1.5px;
   font-weight: 100;
   font-size: 1.4em;
 }
 
-.timeline .event {
+.stations .stop {
   border-bottom: 1px dashed rgba(255, 255, 255, 0.1); /* fade(@color-light, 10%) */
   padding-bottom: calc(var(--spacing) * 0.5);
   margin-bottom: var(--spacing);
   position: relative;
 }
 
-.timeline .event:last-of-type {
+.stations .stop:last-of-type {
   padding-bottom: 0;
   margin-bottom: 0;
   border: none;
 }
 
-/* Event pseudo-elements */
-.timeline .event::before,
-.timeline .event::after {
+/* stop pseudo-elements */
+.stations .stop::before,
+.stations .stop::after {
   position: absolute;
   display: block;
   top: 0;
 }
 
-.timeline .event::before {
+.stations .stop::before {
   left: calc(
     -1 * (
       ((var(--date-width) * 0.6) + var(--spacing) + var(--line-width) + var(--dot-size) + (var(--dot-border) * 2))
@@ -90,7 +94,7 @@
   min-width: var(--date-width);
 }
 
-.timeline .event::after {
+.stations .stop::after {
   box-shadow: 0 0 0 var(--dot-border) var(--color-primary);
   left: calc(-1 * (var(--spacing) + var(--line-width) + (var(--dot-size) * 0.35)));
   background: white;
@@ -100,4 +104,23 @@
   width: var(--dot-size);
   content: "";
   top: 5px;
+}
+
+.stations--red {
+  border-left: var(--line-width) solid var(--color-redline);
+}
+.stations--green {
+  border-left: var(--line-width) solid var(--color-greenline);
+}
+.stations--purple {
+  border-left: var(--line-width) solid var(--color-purpleline);
+}
+.stations--red .stop::after {
+  box-shadow: 0 0 0 var(--dot-border) var(--color-redline);
+}
+.stations--green .stop::after {
+  box-shadow: 0 0 0 var(--dot-border) var(--color-greenline);
+}
+.stations--purple .stop::after {
+  box-shadow: 0 0 0 var(--dot-border) var(--color-purpleline);
 }

@@ -1,12 +1,11 @@
-// Define a type for each stop
-export interface Stop {
+export interface Station {
   name: string;
-  description?: string;
-  img?: string;
-  popularLocations?: string[];
+  // description?: string;
+  // img?: string;
+  // popularLocations?: string[];
 }
 
-const redline_stops = [
+const redline_stations = [
   { name: "Northline Transit Center/HCC" },
   { name: "Melbourne/North Lindale" },
   { name: "Lindale Park" },
@@ -32,4 +31,4 @@ const redline_stops = [
   { name: "Fannin South" }
 ];
 
-export default redline_stops;
+export default redline_stations;
