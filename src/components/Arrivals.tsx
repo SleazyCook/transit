@@ -33,6 +33,7 @@ type ArrivalsProps = {
 };
 
 export default function Arrivals({ nearestStations }: ArrivalsProps) {
+  // const [selectedLine, setSelectedLine] = useState<LineName>("red");
   const [arrivals, setArrivals] = useState<ArrivalsState>({
     northbound: [] as Arrival[],
     southbound: [] as Arrival[],

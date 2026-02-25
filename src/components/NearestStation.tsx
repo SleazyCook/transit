@@ -7,7 +7,7 @@ import purpleline_stations from "../data/purpleline";
 
 import type { Station } from "../types";
 
-type LineName = "red" | "green" | "purple";
+type BaseLineName = "red" | "green" | "purple";
 
 type LineResult = {
   station: Station;
@@ -16,13 +16,7 @@ type LineResult = {
 };
 
 type NearestStationProps = {
-  onClosestChange?: (results: Record<LineName, LineResult>) => void;
-};
-
-const lines: Record<LineName, Station[]> = {
-  red: redline_stations,
-  green: greenline_stations,
-  purple: purpleline_stations,
+  onClosestChange?: (results: Record<BaseLineName, LineResult>) => void;
 };
 
 const NearestStation = ({ onClosestChange }: NearestStationProps) => {
@@ -95,11 +89,14 @@ const NearestStation = ({ onClosestChange }: NearestStationProps) => {
     return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   };
 
-  const findClosestStation = (
-    location: { lat: number; lng: number },
-    stations: Station[]
-  ) => {
-    const valid = stations.filter((s) => s.lat && s.lng);
+    const findClosestStation = (
+        location: { lat: number; lng: number },
+        stations: Station[]
+    ) => {
+    // const valid = stations.filter((s) => s.lat && s.lng);
+    const valid = stations.filter(
+        (s) => s.lat !== undefined && s.lng !== undefined
+    );
 
     return valid.reduce((prev, curr) => {
       const prevDist = getDistanceKm(
@@ -142,31 +139,57 @@ const NearestStation = ({ onClosestChange }: NearestStationProps) => {
   // Main Calculation
   // -------------------------
 
-  useEffect(() => {
-    if (!userLocation) return;
+    useEffect(() => {
+        if (!userLocation) return;
 
-    const results = {} as Record<LineName, LineResult>;
+        const results = {} as Record<LineName, LineResult>;
 
-    (Object.keys(lines) as LineName[]).forEach((line) => {
-      const closest = findClosestStation(userLocation, lines[line]);
-      results[line] = calculateLineData(userLocation, closest);
-    });
+        const redClosest = calculateLineData(
+            userLocation,
+            findClosestStation(userLocation, redline_stations)
+        );
 
-    setClosestStations(results);
+        const greenClosest = calculateLineData(
+            userLocation,
+            findClosestStation(userLocation, greenline_stations)
+        );
 
-    // Pass everything to parent at once
-    if (onClosestChange) {
-        onClosestChange(results);
+        const purpleClosest = calculateLineData(
+            userLocation,
+            findClosestStation(userLocation, purpleline_stations)
+        );
+
+        results.red = redClosest;
+        results.green = greenClosest;
+        results.purple = purpleClosest;
+
+        // Priority: red > green > purple
+        let overall = redClosest;
+
+        if (greenClosest.miles < overall.miles) {
+            overall = greenClosest;
+        }
+
+        if (purpleClosest.miles < overall.miles) {
+            overall = purpleClosest;
+        }
+
+        results.overall = overall;
+
+        setClosestStations(results);
+
+        if (onClosestChange) {
+            onClosestChange(results);
         }
     }, [userLocation, onClosestChange]);
 
     const formatMiles = (miles: number) => {
-    return miles > 5 ? "> 5 miles" : `${miles} miles`;
+        return miles > 5 ? "> 5 miles" : `${miles} miles`;
     };
 
     const formatWalkTime = (minutes: number) => {
-    if (minutes > 60) return "> 1 hr";
-    return `${minutes} min`;
+        if (minutes > 60) return "> 1 hr";
+        return `${minutes} min`;
     };
 
   // -------------------------
