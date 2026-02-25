@@ -1,41 +1,55 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect } from "react";
 import { FaPersonWalking } from "react-icons/fa6";
 
-import redline_stations from '../data/redline';
-import greenline_stations from '../data/greenline';
-import purpleline_stations from '../data/purpleline';
+import redline_stations from "../data/redline";
+import greenline_stations from "../data/greenline";
+import purpleline_stations from "../data/purpleline";
 
-import type { Station } from '../types';
+import type { Station } from "../types";
 
-type NearestStationProps = {
-  onClosestRed?: (station: Station) => void;
-  onClosestGreen?: (station: Station) => void;
-  onClosestPurple?: (station: Station) => void;
+type LineName = "red" | "green" | "purple";
+
+type LineResult = {
+  station: Station;
+  miles: number;
+  walkTime: number;
 };
 
-const NearestStation = ({
-  onClosestRed,
-  onClosestGreen,
-  onClosestPurple
-}: NearestStationProps) => {
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [closestRed, setClosestRed] = useState<Station | null>(null);
-  const [closestGreen, setClosestGreen] = useState<Station | null>(null);
-  const [closestPurple, setClosestPurple] = useState<Station | null>(null);
-  const [redWalkTime, setRedWalkTime] = useState<number | null>(null);
-  const [redMiles, setRedMiles] = useState<number | null>(null);
+type NearestStationProps = {
+  onClosestChange?: (results: Record<LineName, LineResult>) => void;
+};
 
-  // Get user location on mount
+const lines: Record<LineName, Station[]> = {
+  red: redline_stations,
+  green: greenline_stations,
+  purple: purpleline_stations,
+};
+
+const NearestStation = ({ onClosestChange }: NearestStationProps) => {
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
+  const [closestStations, setClosestStations] = useState<
+    Record<LineName, LineResult> | null
+  >(null);
+
+  // -------------------------
+  // Location
+  // -------------------------
+
   useEffect(() => {
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(
-      (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      (pos) =>
+        setUserLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        }),
       () => {}
     );
-    // Test location:
-    // setUserLocation({ lat: 29.755590, lng: -95.364105 });
   }, []);
 
   const requestLocation = () => {
@@ -45,82 +59,132 @@ const NearestStation = ({
     }
 
     navigator.geolocation.getCurrentPosition(
-      (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      (pos) =>
+        setUserLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        }),
       (error) => {
         if (error.code === error.PERMISSION_DENIED) {
-          alert("Location access is blocked. Please enable location in your browser.");
+          alert("Location access is blocked. Please enable location.");
         }
       }
     );
   };
 
-  const getDistanceKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    const R = 6371; // Earth radius in km
+  // -------------------------
+  // Distance Helpers
+  // -------------------------
+
+  const getDistanceKm = (
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ) => {
+    const R = 6371;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
+
     const a =
       Math.sin(dLat / 2) ** 2 +
       Math.cos(lat1 * (Math.PI / 180)) *
         Math.cos(lat2 * (Math.PI / 180)) *
         Math.sin(dLon / 2) ** 2;
+
     return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   };
 
-  const findClosestStation = (userLocation: { lat: number; lng: number }, stations: Station[]) => {
-    const validStations = stations.filter((s) => s.lat !== undefined && s.lng !== undefined);
-    return validStations.reduce((prev, curr) => {
-      const prevDist = getDistanceKm(userLocation.lat, userLocation.lng, prev.lat!, prev.lng!);
-      const currDist = getDistanceKm(userLocation.lat, userLocation.lng, curr.lat!, curr.lng!);
+  const findClosestStation = (
+    location: { lat: number; lng: number },
+    stations: Station[]
+  ) => {
+    const valid = stations.filter((s) => s.lat && s.lng);
+
+    return valid.reduce((prev, curr) => {
+      const prevDist = getDistanceKm(
+        location.lat,
+        location.lng,
+        prev.lat!,
+        prev.lng!
+      );
+
+      const currDist = getDistanceKm(
+        location.lat,
+        location.lng,
+        curr.lat!,
+        curr.lng!
+      );
+
       return currDist < prevDist ? curr : prev;
     });
   };
 
+  const calculateLineData = (
+    location: { lat: number; lng: number },
+    station: Station
+  ): LineResult => {
+    const distanceKm = getDistanceKm(
+      location.lat,
+      location.lng,
+      station.lat!,
+      station.lng!
+    );
+
+    return {
+      station,
+      miles: Math.round(distanceKm * 0.621371 * 10) / 10,
+      walkTime: Math.round(distanceKm * 12),
+    };
+  };
+
+  // -------------------------
+  // Main Calculation
+  // -------------------------
+
   useEffect(() => {
     if (!userLocation) return;
 
-    const red = findClosestStation(userLocation, redline_stations);
-    const green = findClosestStation(userLocation, greenline_stations);
-    const purple = findClosestStation(userLocation, purpleline_stations);
+    const results = {} as Record<LineName, LineResult>;
 
-    setClosestRed(red);
-    setClosestGreen(green);
-    setClosestPurple(purple);
+    (Object.keys(lines) as LineName[]).forEach((line) => {
+      const closest = findClosestStation(userLocation, lines[line]);
+      results[line] = calculateLineData(userLocation, closest);
+    });
 
-    // Pass to parent component
-    if (onClosestRed) onClosestRed(red);
-    if (onClosestGreen) onClosestGreen(green);
-    if (onClosestPurple) onClosestPurple(purple);
+    setClosestStations(results);
 
-    const redDistance = getDistanceKm(
-        userLocation.lat,
-        userLocation.lng,
-        red.lat!,
-        red.lng!
-    );
-    const miles = Math.round(redDistance * 0.621371 * 10) / 10;
-    setRedMiles(miles);
-    setRedWalkTime(Math.round(redDistance * 12));
-  }, [userLocation, onClosestRed, onClosestGreen, onClosestPurple]);
+    // Pass everything to parent at once
+    if (onClosestChange) {
+      onClosestChange(results);
+    }
+  }, [userLocation, onClosestChange]);
 
-  if (!userLocation)
+  // -------------------------
+  // UI
+  // -------------------------
+
+  if (!userLocation) {
     return (
       <div>
         <button onClick={requestLocation}>Use My Location</button>
       </div>
     );
+  }
+
+  if (!closestStations) return null;
 
   return (
     <div>
-      <div>
-        Your Location: {userLocation.lat.toFixed(6)}, {userLocation.lng.toFixed(6)}
-      </div>
-      {closestRed && <div>
-        Red Line: {closestRed.name}
-        {redWalkTime && <span><FaPersonWalking />{redWalkTime} min</span>}&nbsp;
-        {redMiles && <span>{redMiles} miles</span>}
-        </div>}
-      {closestGreen && <div>Green Line: {closestGreen.name}</div>}
-      {closestPurple && <div>Purple Line: {closestPurple.name}</div>}
+      {Object.entries(closestStations).map(([line, data]) => (
+        <div key={line}>
+          {line.toUpperCase()} Line: {data.station.name}{" "}
+          <span>
+            <FaPersonWalking /> {data.walkTime} min
+          </span>{" "}
+          <span>{data.miles} miles</span>
+        </div>
+      ))}
     </div>
   );
 };
