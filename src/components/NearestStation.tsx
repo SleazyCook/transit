@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { FaPersonWalking } from "react-icons/fa6";
+
 import redline_stations from '../data/redline';
 import greenline_stations from '../data/greenline';
 import purpleline_stations from '../data/purpleline';
@@ -21,6 +23,8 @@ const NearestStation = ({
   const [closestRed, setClosestRed] = useState<Station | null>(null);
   const [closestGreen, setClosestGreen] = useState<Station | null>(null);
   const [closestPurple, setClosestPurple] = useState<Station | null>(null);
+  const [redWalkTime, setRedWalkTime] = useState<number | null>(null);
+  const [redMiles, setRedMiles] = useState<number | null>(null);
 
   // Get user location on mount
   useEffect(() => {
@@ -82,10 +86,20 @@ const NearestStation = ({
     setClosestGreen(green);
     setClosestPurple(purple);
 
-    // Pass to parent
+    // Pass to parent component
     if (onClosestRed) onClosestRed(red);
     if (onClosestGreen) onClosestGreen(green);
     if (onClosestPurple) onClosestPurple(purple);
+
+    const redDistance = getDistanceKm(
+        userLocation.lat,
+        userLocation.lng,
+        red.lat!,
+        red.lng!
+    );
+    const miles = Math.round(redDistance * 0.621371 * 10) / 10;
+    setRedMiles(miles);
+    setRedWalkTime(Math.round(redDistance * 12));
   }, [userLocation, onClosestRed, onClosestGreen, onClosestPurple]);
 
   if (!userLocation)
@@ -100,7 +114,11 @@ const NearestStation = ({
       <div>
         Your Location: {userLocation.lat.toFixed(6)}, {userLocation.lng.toFixed(6)}
       </div>
-      {closestRed && <div>Red Line: {closestRed.name}</div>}
+      {closestRed && <div>
+        Red Line: {closestRed.name}
+        {redWalkTime && <span><FaPersonWalking />{redWalkTime} min</span>}&nbsp;
+        {redMiles && <span>{redMiles} miles</span>}
+        </div>}
       {closestGreen && <div>Green Line: {closestGreen.name}</div>}
       {closestPurple && <div>Purple Line: {closestPurple.name}</div>}
     </div>
