@@ -9,6 +9,8 @@ import type { Station } from "../types";
 
 type BaseLineName = "red" | "green" | "purple";
 
+type LineName = BaseLineName | "overall";
+
 type LineResult = {
   station: Station;
   miles: number;
