@@ -156,9 +156,18 @@ const NearestStation = ({ onClosestChange }: NearestStationProps) => {
 
     // Pass everything to parent at once
     if (onClosestChange) {
-      onClosestChange(results);
-    }
-  }, [userLocation, onClosestChange]);
+        onClosestChange(results);
+        }
+    }, [userLocation, onClosestChange]);
+
+    const formatMiles = (miles: number) => {
+    return miles > 5 ? "> 5 miles" : `${miles} miles`;
+    };
+
+    const formatWalkTime = (minutes: number) => {
+    if (minutes > 60) return "> 1 hr";
+    return `${minutes} min`;
+    };
 
   // -------------------------
   // UI
@@ -179,10 +188,10 @@ const NearestStation = ({ onClosestChange }: NearestStationProps) => {
       {Object.entries(closestStations).map(([line, data]) => (
         <div key={line}>
           {line.toUpperCase()} Line: {data.station.name}{" "}
-          <span>
-            <FaPersonWalking /> {data.walkTime} min
-          </span>{" "}
-          <span>{data.miles} miles</span>
+            <span>
+                <FaPersonWalking /> {formatWalkTime(data.walkTime)}
+            </span>{" "}
+            <span>{formatMiles(data.miles)}</span>
         </div>
       ))}
     </div>
