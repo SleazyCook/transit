@@ -82,32 +82,9 @@ const NearestStation = () => {
 
     useEffect(() => {
         if (!userLocation) return;
-        // Closest Redline
-        // const closest = redline_stations.reduce((prev, curr) => {
-        //     const prevDist = getDistanceKm(
-        //         userLocation.lat,
-        //         userLocation.lng,
-        //         prev.lat,
-        //         prev.lng
-        //     );
-
-        //     const currDist = getDistanceKm(
-        //         userLocation.lat,
-        //         userLocation.lng,
-        //         curr.lat,
-        //         curr.lng
-        //     );
-
-        //     return currDist < prevDist ? curr : prev;
-        // });
-
-        // setClosestRedline(closest.name);
         setClosestRed(findClosestStation(userLocation, redline_stations));
         setClosestGreen(findClosestStation(userLocation, greenline_stations));
         setClosestPurple(findClosestStation(userLocation, purpleline_stations));
-
-
-        
     }, [userLocation]);
 
     if (!userLocation) return(
