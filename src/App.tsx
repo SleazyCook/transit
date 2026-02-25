@@ -28,6 +28,7 @@ function App() {
     <>
       <Header />
       <NearestStation onClosestChange={setNearestStations} />
+      {console.log(nearestStations)}
       <BurnettArrivals />
       <Stations />
     </>
