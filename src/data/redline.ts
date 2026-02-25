@@ -4,57 +4,60 @@ export interface Station {
   bike_parking?: boolean;
   connections?: string[];
   nearby?: string[];
-  lat?: number;
-  lng?: number;
-  south_id?: string,
-  north_id?: string
+  lat: number;
+  lng: number;
+  direction_1_id?: string,
+  direction_2_id?: string
 }
+
+// direction_1 = Southbound / Westbound
+// direction_2 = Northbound / Eastbound
 
 const redline_stations = [
   { name: "Northline Transit Center/HCC",
     address: "https://maps.google.com/?q=7850%20Fulton%20St.,%20Houston,%20TX%2077022",
     lat: 29.832459,
     lng: -95.376039,
-    south_id: "Ho414_4620_25048",
-    north_id: "Ho414_4620_25047"
+    direction_1_id: "Ho414_4620_25048",
+    direction_2_id: "Ho414_4620_25047"
   },
   { name: "Melbourne/North Lindale",
     address: "https://maps.google.com/?q=6321%20Fulton%20St.,%20Houston,%20TX%2077022",
     lat: 29.815781,
     lng: -95.370535,
-    south_id: "Ho414_4620_25046",
-    north_id: "Ho414_4620_25045"
+    direction_1_id: "Ho414_4620_25046",
+    direction_2_id: "Ho414_4620_25045"
    },
   { name: "Lindale Park",
     address: "https://maps.google.com/?q=5312%20Fulton%20St.,%20Houston,%20TX%2077009",
     lat: 29.808821,
     lng: -95.369576,
-    south_id: "Ho414_4620_25044",
-    north_id: "Ho414_4620_25043"
+    direction_1_id: "Ho414_4620_25044",
+    direction_2_id: "Ho414_4620_25043"
    },
   { name: "Cavalcade",
     address: "https://maps.google.com/?q=4719%20Fulton%20St.,%20Houston,%20TX%2077009",
     nearby: ["Khaosan Road Thai"],
     lat: 29.802741,
     lng: -95.368148,
-    south_id: "Ho414_4620_25042",
-    north_id: "Ho414_4620_25041"
+    direction_1_id: "Ho414_4620_25042",
+    direction_2_id: "Ho414_4620_25041"
    },
   { name: "Moody Park",
     address: "https://maps.google.com/?q=4719%20Fulton%20St.,%20Houston,%20TX%2077009",
     nearby: ["Moody Park"],
     lat: 29.795356,
     lng: -95.365815,
-    south_id: "Ho414_4620_25040",
-    north_id: "Ho414_4620_25039"
+    direction_1_id: "Ho414_4620_25040",
+    direction_2_id: "Ho414_4620_25039"
    },
   { name: "Fulton/North Central",
     address: "https://maps.google.com/?q=2592%20Fulton%20St.,%20Houston,%20TX%2077009",
     nearby: ["Butterfly Pocket Park", "McDonald's"],
     lat: 29.78609,
     lng: -95.360664,
-    south_id: "Ho414_4620_25038",
-    north_id: "Ho414_4620_25037"
+    direction_1_id: "Ho414_4620_25038",
+    direction_2_id: "Ho414_4620_25037"
    },
   { name: "Quitman/Near Northside",
     address: "https://maps.google.com/?q=2321%20North%20Main%20St.,%20Houston,%20TX%2077009",
@@ -62,8 +65,8 @@ const redline_stations = [
     nearby: ["White Oak Music Center"],
     lat: 29.780157,
     lng: -95.363599,
-    south_id: "Ho414_4620_25036",
-    north_id: "Ho414_4620_25035"
+    direction_1_id: "Ho414_4620_25036",
+    direction_2_id: "Ho414_4620_25035"
    },
   { name: "Burnett Transit Center / Casa de Amigos",
     address: "https://maps.google.com/?q=1460%20N%20Main%20St.,%20Houston,%20TX%2077009",
@@ -71,16 +74,16 @@ const redline_stations = [
     nearby: ["Bad Astronaut Brewing Co.", "Poppa Burger"],
     lat: 29.7718,
     lng: -95.359304,
-    south_id: "Ho414_4620_25034",
-    north_id: "Ho414_4620_25033"
+    direction_1_id: "Ho414_4620_25034",
+    direction_2_id: "Ho414_4620_25033"
   },
   { name: "UH-Downtown",
     address: "https://maps.google.com/?q=6%20North%20Main%20St.,%20Houston,%20TX%2077002",
     nearby: ["UH Downtown", "Buffalo Bayou Bike Trail", "White Oak Bayou Greenway"],
     lat: 29.765878,
     lng: -95.358743,
-    south_id: "Ho414_4620_25032",
-    north_id: "Ho414_4620_25031"
+    direction_1_id: "Ho414_4620_25032",
+    direction_2_id: "Ho414_4620_25031"
   },
   { name: "Preston",
     address: "https://maps.google.com/?q=367%20Main%20St.,%20Houston,%20TX%2077002",
@@ -88,8 +91,8 @@ const redline_stations = [
     nearby: ["Market Square Park", "La Calle Tacos", "Notsuoh", "Behind Closed Doors", "Cherry", "Fabian's Latin Flavors", "Off the Record", "Bungalow", "CRU - Downtown", "Warren's"],
     lat: 29.76114,
     lng: -95.36166,
-    south_id: "Ho414_4620_25030",
-    north_id: "Ho414_4620_25029"
+    direction_1_id: "Ho414_4620_25030",
+    direction_2_id: "Ho414_4620_25029"
    },
   { name: "Central Station Main",
     address: "https://maps.google.com/?q=714%20Main%20St.,%20Houston,%20TX%2077002",
@@ -98,8 +101,8 @@ const redline_stations = [
     nearby: ["Flying Saucer Draught Imporium", "Shake Shack", "The Finn Food Hall", "Starbucks", "Murphy's Deli"],
     lat: 29.758788,
     lng: -95.36351,
-    south_id: "Ho414_4620_25049",
-    north_id: "Ho414_4620_25050"
+    direction_1_id: "Ho414_4620_25049",
+    direction_2_id: "Ho414_4620_25050"
    },
   { name: "Main Street Square",
     address: "https://maps.google.com/?q=960%20Main%20St.,%20Houston,%20TX%2077002",
@@ -107,16 +110,16 @@ const redline_stations = [
     nearby: ["GreenStreet", "House of Blues", "Punchline", "Morton's Steakhouse", "Corner Bakery", "Phoenicia"],
     lat: 29.75586,
     lng: -95.36584,
-    south_id: "Ho414_4620_25028",
-    north_id: "Ho414_4620_25027"
+    direction_1_id: "Ho414_4620_25028",
+    direction_2_id: "Ho414_4620_25027"
    },
   { name: "Bell",
     address: "https://maps.google.com/?q=1453%20Main%20St.,%20Houston,%20TX%2077002",
     nearby: ["Trelby Park"],
     lat: 29.752868,
     lng: -95.368191,
-    south_id: "Ho414_4620_25026",
-    north_id: "Ho414_4620_25025"
+    direction_1_id: "Ho414_4620_25026",
+    direction_2_id: "Ho414_4620_25025"
    },
   {
     name: "Downtown Transit Center",
@@ -125,96 +128,96 @@ const redline_stations = [
     nearby: ["Metro Ride Store", "Pappas Bar-B-Q"],
     lat: 29.749871,
     lng:  -95.370569,
-    south_id: "Ho414_4620_25024",
-    north_id: "Ho414_4620_25023"
+    direction_1_id: "Ho414_4620_25024",
+    direction_2_id: "Ho414_4620_25023"
   },
   { name: "McGowen",
     address: "https://maps.google.com/?q=2560%20Main%20St.,%20Houston,%20TX%2077002",
     nearby: ["Red Cat Jazz Cafe", "Warehouse Live", "Gypsy Poet", "Midtown Park"],
     lat: 29.745034,
     lng: -95.374392,
-    south_id: "Ho414_4620_25022",
-    north_id: "Ho414_4620_25021"
+    direction_1_id: "Ho414_4620_25022",
+    direction_2_id: "Ho414_4620_25021"
    },
   { name: "Ensemble/HCC",
     address: "https://maps.google.com/?q=3509%20Main%20St.,%20Houston,%20TX%2077002",
     nearby: ["Home Slice Pizza", "Spicy Girl", "Sig's Lagoon Record Shop", "Breakfast Klub"],
     lat: 29.738854,
     lng: -95.37928,
-    south_id: "Ho414_4620_25020",
-    north_id: "Ho414_4620_25019"
+    direction_1_id: "Ho414_4620_25020",
+    direction_2_id: "Ho414_4620_25019"
    },
   { name: "Wheeler",
     address: "https://maps.google.com/?q=4590%20Main%20St.,%20Houston,%20TX%2077002",
     nearby: ["The Ion"],
     lat: 29.732732,
     lng: -95.383421,
-    south_id: "Ho414_4620_25018",
-    north_id: "Ho414_4620_25017"
+    direction_1_id: "Ho414_4620_25018",
+    direction_2_id: "Ho414_4620_25017"
    },
   { name: "Museum District",
     address: "https://maps.google.com/?q=5640%20San%20Jacinto%20St.,%20Houston,%20TX%2077004",
     nearby: ["Bodega's Taco Shop", "Museum of Fine Arts", "Museum of Natural Science", "McGovern Garden Falls", ""],
     lat: 29.72474,
     lng: 95.38909,
-    south_id: "Ho414_4620_25016",
-    north_id: "Ho414_4620_25015"
+    direction_1_id: "Ho414_4620_25016",
+    direction_2_id: "Ho414_4620_25015"
    },
   { name: "Hermann Park/Rice U",
     address: "https://maps.google.com/?q=6098%20Fannin%20St.,%20Houston,%20TX%2077030",
     nearby: ["Hermann Park", "Japanese Garden", "McGovern Garden Falls", "Rice University"],
     lat: 29.720043,
     lng: -95.393604,
-    south_id: "Ho414_4620_25014",
-    north_id: "Ho414_4620_25013"
+    direction_1_id: "Ho414_4620_25014",
+    direction_2_id: "Ho414_4620_25013"
    },
   { name: "Memorial Hermann Hospital/Houston Zoo",
     address: "https://maps.google.com/?q=6413%20Fannin%20St.,%20Houston,%20TX%2077030",
     nearby: ["Hermann Park", "Memorial Hermann Medical Center"],
     lat: 29.71486,
     lng: -95.39685,
-    south_id: "Ho414_4620_25012",
-    north_id: "Ho414_4620_25011"
+    direction_1_id: "Ho414_4620_25012",
+    direction_2_id: "Ho414_4620_25011"
    },
   { name: "Dryden/TMC",
     address: "https://maps.google.com/?q=6607%20Fannin%20St.,%20Houston,%20TX%2077021",
     nearby: ["Westin Houston Medical Center"],
     lat: 29.709348,
     lng: -95.401206,
-    south_id: "Ho414_4620_25010",
-    north_id: "Ho414_4620_25009"
+    direction_1_id: "Ho414_4620_25010",
+    direction_2_id: "Ho414_4620_25009"
    },
   { name: "TMC Transit Center",
     address: "https://maps.google.com/?q=6934%20Fannin%20St.,%20Houston,%20TX%2077030",
     nearby: ["MD Anderson Prarie", "Brays Bayou Greenway Trail"],
     lat: 29.704117,
     lng: -95.402931,
-    south_id: "Ho414_4620_25008",
-    north_id: "Ho414_4620_25007"
+    direction_1_id: "Ho414_4620_25008",
+    direction_2_id: "Ho414_4620_25007"
    },
   { name: "Smith Lands",
     address: "https://maps.google.com/?q=7834%20Green Linebriar%20Drive,%20Houston,%20TX%2077054",
     nearby: ["Luby's"],
     lat: 29.696464,
     lng: -95.404859,
-    south_id: "Ho414_4620_25006",
-    north_id: "Ho414_4620_25005"
+    direction_1_id: "Ho414_4620_25006",
+    direction_2_id: "Ho414_4620_25005"
    },
   { name: "Stadium Park/Astrodome",
     address: "https://maps.google.com/?q=8168%20Fannin%20St.,%20Houston,%20TX%2077054",
     nearby: ["NRG Stadium"],
     lat: 29.685928,
     lng: -95.40341,
-    south_id: "Ho414_4620_25004",
-    north_id: "Ho414_4620_25003"
+    direction_1_id: "Ho414_4620_25004",
+    direction_2_id: "Ho414_4620_25003"
    },
   { name: "Fannin South",
     address: "https://maps.google.com/?q=1604%20West%20Bellfort%20Ave.,%20Houston,%20TX%2077054",
     nearby: ["Fannin South Transit Center"],
     lat: 29.673584,
     lng: -95.402862,
-    south_id: "Ho414_4620_25002",
-    north_id: "Ho414_4620_25001"
+    direction_1_id: "Ho414_4620_25002",
+    direction_2_id: "Ho414_4620_25001"
    }
 ];
 
