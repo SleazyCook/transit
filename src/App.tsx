@@ -7,7 +7,7 @@ import "./styles/stations.css";
 import type { Station } from "./types";
 
 import Header from "./components/Header.tsx";
-import BurnettArrivals from "./components/BurnettArrivals.tsx";
+import Arrivals from "./components/Arrivals.tsx";
 import Stations from "./components/Stations.tsx";
 import NearestStation from "./components/NearestStation.tsx";
 
@@ -28,8 +28,7 @@ function App() {
     <>
       <Header />
       <NearestStation onClosestChange={setNearestStations} />
-      {console.log(nearestStations)}
-      <BurnettArrivals />
+      <Arrivals nearestStations={nearestStations}/>
       <Stations />
     </>
   );

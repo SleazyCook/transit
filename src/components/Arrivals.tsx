@@ -18,8 +18,21 @@ export interface ArrivalsState {
   southbound: Arrival[];
 }
 
-export default function BurnettArrivals() {
-  // Explicitly type the useState to avoid TS inferring never[]
+import type { Station } from "../types";
+
+type LineName = "red" | "green" | "purple";
+
+type LineResult = {
+  station: Station;
+  miles: number;
+  walkTime: number;
+};
+
+type ArrivalsProps = {
+  nearestStations: Record<LineName, LineResult> | null;
+};
+
+export default function Arrivals({ nearestStations }: ArrivalsProps) {
   const [arrivals, setArrivals] = useState<ArrivalsState>({
     northbound: [] as Arrival[],
     southbound: [] as Arrival[],
@@ -77,7 +90,7 @@ export default function BurnettArrivals() {
   }, []);
 
   if (loading) return <div className="arrivals">
-      <p>Loading Burnett Transit Center arrivals...</p></div>;
+      <p>Loading light rail arrival times...</p></div>;
 
   return (
     <div className="arrivals">
