@@ -4,20 +4,23 @@ import "./styles/app.css";
 import "./styles/arrivals.css";
 import "./styles/stations.css";
 
-import type { Station } from "./types";
+// import type { Station } from "./types";
+import type { LineName, LineResult } from "./types";
 
 import Header from "./components/Header.tsx";
 import Arrivals from "./components/Arrivals.tsx";
 import Stations from "./components/Stations.tsx";
 import NearestStation from "./components/NearestStation.tsx";
 
-type LineName = "red" | "green" | "purple";
+// type LineName = "red" | "green" | "purple" | "overall";
 
-type LineResult = {
-  station: Station;
-  miles: number;
-  walkTime: number;
-};
+// type LineResult = {
+//   station: Station;
+//   miles: number;
+//   walkTime: number;
+// };
+
+
 
 function App() {
   const [nearestStations, setNearestStations] = useState<

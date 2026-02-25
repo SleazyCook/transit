@@ -5,20 +5,10 @@ import redline_stations from "../data/redline";
 import greenline_stations from "../data/greenline";
 import purpleline_stations from "../data/purpleline";
 
-import type { Station } from "../types";
-
-type BaseLineName = "red" | "green" | "purple";
-
-type LineName = BaseLineName | "overall";
-
-type LineResult = {
-  station: Station;
-  miles: number;
-  walkTime: number;
-};
+import type { LineName, LineResult, Station } from "../types";
 
 type NearestStationProps = {
-  onClosestChange?: (results: Record<BaseLineName, LineResult>) => void;
+  onClosestChange?: (results: Record<LineName, LineResult>) => void;
 };
 
 const NearestStation = ({ onClosestChange }: NearestStationProps) => {
