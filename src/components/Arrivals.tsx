@@ -39,6 +39,8 @@ export default function Arrivals({ nearestStations }: ArrivalsProps) {
   });
   const [loading, setLoading] = useState<boolean>(true);
 
+  console.log(nearestStations)
+
   const fetchArrivals = async () => {
     setLoading(true);
 
