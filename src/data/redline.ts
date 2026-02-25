@@ -1,19 +1,9 @@
-export interface Station {
-  name: string;
-  address: string;
-  bike_parking?: boolean;
-  connections?: string[];
-  nearby?: string[];
-  lat: number;
-  lng: number;
-  direction_1_id?: string,
-  direction_2_id?: string
-}
+import type { Station } from '../types';
 
 // direction_1 = Southbound / Westbound
 // direction_2 = Northbound / Eastbound
 
-const redline_stations = [
+const redline_stations: Station[] = [
   { name: "Northline Transit Center/HCC",
     address: "https://maps.google.com/?q=7850%20Fulton%20St.,%20Houston,%20TX%2077022",
     lat: 29.832459,

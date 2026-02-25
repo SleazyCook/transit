@@ -1,14 +1,4 @@
-export interface Station {
-  name: string;
-  address: string;
-  bike_parking?: boolean;
-  connections?: string[];
-  nearby?: string[];
-  lat: number;
-  lng: number;
-  direction_1_id?: string,
-  direction_2_id?: string
-}
+import type { Station } from '../types';
 
 // direction_1 = Southbound / Westbound
 // direction_2 = Northbound / Eastbound

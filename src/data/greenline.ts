@@ -1,20 +1,10 @@
-export interface Station {
-  name: string;
-  address: string;
-  bike_parking?: boolean;
-  connections?: string[];
-  naerby?: [""],
-  lat: number,
-  lng: number,
-  direction_1_id?: string,
-  direction_2_id?: string
-}
+import type { Station } from '../types';
 
 // direction_1 = Southbound / Westbound
 // direction_2 = Northbound / Eastbound
 
 
-const greenline_stations = [
+const greenline_stations: Station[] = [
   { name: "Theater District",
     address: "https://maps.google.com/?q=550%20Rusk%20St.,%20Houston,%20TX%2077002",
     connections: ["Purple Line Line"],
@@ -31,7 +21,7 @@ const greenline_stations = [
    },
   { name: "Convention District",
     address: "https://maps.google.com/?q=1635%20Rusk%20St.,%20Houston,%20TX%2077002",
-    connections: "Purple Line",
+    connections: ["Purple Line"],
     direction_1_id: "Ho414_4620_25056",
     lat: 29.754992,
     lng: -95.356331
