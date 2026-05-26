@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { FaPersonWalking } from "react-icons/fa6";
 
 import redline_stations from "../data/redline";
 import greenline_stations from "../data/greenline";
@@ -17,7 +16,7 @@ const NearestStation = ({ onClosestChange }: NearestStationProps) => {
     lng: number;
   } | null>(null);
 
-  const [closestStations, setClosestStations] = useState<
+  const [, setClosestStations] = useState<
     Record<LineName, LineResult> | null
   >(null);
 
@@ -38,25 +37,6 @@ const NearestStation = ({ onClosestChange }: NearestStationProps) => {
     );
   }, []);
 
-  const requestLocation = () => {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) =>
-        setUserLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        }),
-      (error) => {
-        if (error.code === error.PERMISSION_DENIED) {
-          alert("Location access is blocked. Please enable location.");
-        }
-      }
-    );
-  };
 
   // -------------------------
   // Distance Helpers
@@ -185,32 +165,13 @@ const NearestStation = ({ onClosestChange }: NearestStationProps) => {
     };
 
   // -------------------------
-  // UI
+  // UI — renders nothing; data flows up via onClosestChange
   // -------------------------
 
-  if (!userLocation) {
-    return (
-      <div>
-        <button onClick={requestLocation}>Use My Location</button>
-      </div>
-    );
-  }
+  void formatMiles;
+  void formatWalkTime;
 
-  if (!closestStations) return null;
-
-  return (
-    <div>
-      {Object.entries(closestStations).map(([line, data]) => (
-        <div key={line}>
-          {line.toUpperCase()} Line: {data.station.name}{" "}
-            <span>
-                <FaPersonWalking /> {formatWalkTime(data.walkTime)}
-            </span>{" "}
-            <span>{formatMiles(data.miles)}</span>
-        </div>
-      ))}
-    </div>
-  );
+  return null;
 };
 
 export default NearestStation;
