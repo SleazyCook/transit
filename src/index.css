@@ -1,5 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+:root {
+  --bg: #FAF8F3;
+  --surface: #ffffff;
+  --text: #161512;
+  --text-sub: rgba(22, 21, 18, 0.45);
+  --text-dim: rgba(22, 21, 18, 0.35);
+  --text-faint: rgba(22, 21, 18, 0.2);
+  --border: rgba(0, 0, 0, 0.05);
+  --border-med: rgba(0, 0, 0, 0.08);
+  --border-dash: rgba(0, 0, 0, 0.08);
+  --hover: rgba(0, 0, 0, 0.04);
+  --muted: rgba(0, 0, 0, 0.06);
+  --toggle-off: rgba(0, 0, 0, 0.12);
+  --segment-track: rgba(0, 0, 0, 0.06);
+  --segment-pill: #ffffff;
+}
+
+:root.dark {
+  --bg: #111110;
+  --surface: #1E1D1C;
+  --text: #F0EDE8;
+  --text-sub: rgba(240, 237, 232, 0.55);
+  --text-dim: rgba(240, 237, 232, 0.38);
+  --text-faint: rgba(240, 237, 232, 0.2);
+  --border: rgba(255, 255, 255, 0.07);
+  --border-med: rgba(255, 255, 255, 0.09);
+  --border-dash: rgba(255, 255, 255, 0.10);
+  --hover: rgba(255, 255, 255, 0.05);
+  --muted: rgba(255, 255, 255, 0.07);
+  --toggle-off: rgba(255, 255, 255, 0.18);
+  --segment-track: rgba(0, 0, 0, 0.35);
+  --segment-pill: rgba(255, 255, 255, 0.14);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -13,8 +47,8 @@ html, body {
 
 body {
   font-family: 'Space Grotesk', system-ui, sans-serif;
-  background: #FAF8F3;
-  color: #161512;
+  background: var(--bg);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }

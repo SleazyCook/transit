@@ -67,9 +67,9 @@ export default function ArrivalsScreen({
     <div style={{
       width: '100%',
       height: '100%',
-      background: '#F6F3EE',
+      background: 'var(--bg)',
       fontFamily: 'Space Grotesk, sans-serif',
-      color: '#161512',
+      color: 'var(--text)',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
@@ -230,20 +230,20 @@ export default function ArrivalsScreen({
       {/* ── Upcoming list ── */}
       <div style={{ flex: 1, padding: '16px 16px 0', overflowY: 'auto' }}>
         {loading ? (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 100, color: 'rgba(0,0,0,0.4)', fontSize: 14, fontWeight: 500 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 100, color: 'var(--text-dim)', fontSize: 14, fontWeight: 500 }}>
             Loading arrivals…
           </div>
         ) : (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 4px 12px' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.45)' }}>UPCOMING</div>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.4px', color: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-dim)' }}>UPCOMING</div>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.4px', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 4 }}>
                 <SwapIcon /> BOTH WAYS
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {allSorted.length === 0 && (
-                <div style={{ padding: '20px 4px', color: 'rgba(0,0,0,0.45)', fontSize: 14 }}>
+                <div style={{ padding: '20px 4px', color: 'var(--text-dim)', fontSize: 14 }}>
                   No upcoming arrivals.
                 </div>
               )}
@@ -256,13 +256,13 @@ export default function ArrivalsScreen({
                   <div
                     key={a.ArrivalId + a.dir}
                     style={{
-                      background: '#fff',
+                      background: 'var(--surface)',
                       borderRadius: 14,
                       padding: '14px 16px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      border: '1px solid rgba(0,0,0,0.04)',
+                      border: '1px solid var(--border)',
                       boxShadow: isFirst
                         ? `inset 4px 0 0 ${line.color}`
                         : `inset 3px 0 0 ${line.color}40`,
@@ -272,11 +272,11 @@ export default function ArrivalsScreen({
                       <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: line.color }}>
                         {dirLabel.toUpperCase()}
                       </div>
-                      <div style={{ fontSize: 15, fontWeight: 600, color: '#161512' }}>
+                      <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)' }}>
                         to {terminus}
                       </div>
                     </div>
-                    <div style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 500, color: '#161512', display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                    <div style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 500, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 4 }}>
                       <span style={{ fontSize: 26, letterSpacing: '-0.5px' }}>
                         {sec < 30 ? '·' : Math.round(sec / 60)}
                       </span>
@@ -292,19 +292,19 @@ export default function ArrivalsScreen({
             {/* Nearby places */}
             {currentStation?.nearby && currentStation.nearby.length > 0 && (
               <div style={{ marginTop: 16, padding: '0 4px 16px' }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.45)', marginBottom: 10 }}>NEARBY</div>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-dim)', marginBottom: 10 }}>NEARBY</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {currentStation.nearby.slice(0, 6).map((n, i) => (
                     <div
                       key={i}
                       style={{
                         padding: '6px 12px',
-                        background: '#fff',
+                        background: 'var(--surface)',
                         borderRadius: 999,
-                        border: '1px solid rgba(0,0,0,0.07)',
+                        border: '1px solid var(--border)',
                         fontSize: 12.5,
                         fontWeight: 500,
-                        color: '#161512',
+                        color: 'var(--text)',
                       }}
                     >
                       {n}

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import type { BaseLineName } from '../types';
 import { LINE_CONFIG } from '../config/lines';
+import { useTheme, type Theme } from '../context/ThemeContext';
+
+const THEME_OPTIONS: Theme[] = ['Light', 'Dark', 'Auto'];
 
 type Props = {
   selectedLine: BaseLineName;
@@ -58,7 +61,7 @@ function Toggle({ on, color, onToggle }: { on: boolean; color: string; onToggle:
       onClick={onToggle}
       style={{
         width: 44, height: 26, borderRadius: 999,
-        background: on ? color : 'rgba(0,0,0,0.12)',
+        background: on ? color : 'var(--toggle-off)',
         border: 'none', padding: 0, cursor: 'pointer',
         position: 'relative', transition: 'background 0.2s',
         flexShrink: 0,
@@ -78,15 +81,15 @@ function Toggle({ on, color, onToggle }: { on: boolean; color: string; onToggle:
 
 function Segment({ options, selectedIdx, color, onSelect }: { options: string[]; selectedIdx: number; color: string; onSelect: (i: number) => void }) {
   return (
-    <div style={{ display: 'flex', padding: 3, background: 'rgba(0,0,0,0.06)', borderRadius: 10, flexShrink: 0 }}>
+    <div style={{ display: 'flex', padding: 3, background: 'var(--segment-track)', borderRadius: 10, flexShrink: 0 }}>
       {options.map((o, i) => (
         <button
           key={o}
           onClick={() => onSelect(i)}
           style={{
             padding: '5px 13px', borderRadius: 7,
-            background: i === selectedIdx ? '#fff' : 'transparent',
-            color: i === selectedIdx ? color : 'rgba(22,21,18,0.5)',
+            background: i === selectedIdx ? 'var(--segment-pill)' : 'transparent',
+            color: i === selectedIdx ? color : 'var(--text-sub)',
             fontSize: 12, fontWeight: 600,
             border: 'none',
             boxShadow: i === selectedIdx ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
@@ -102,6 +105,7 @@ function Segment({ options, selectedIdx, color, onSelect }: { options: string[];
 
 export default function SettingsView({ selectedLine }: Props) {
   const line = LINE_CONFIG[selectedLine];
+  const { theme, setTheme } = useTheme();
 
   // Local state for each setting
   const [toggleState, setToggleState] = useState<Record<string, boolean>>(() => {
@@ -121,6 +125,7 @@ export default function SettingsView({ selectedLine }: Props) {
         if (it.kind === 'segment') init[it.label] = it.defaultIdx;
       });
     });
+    init['Theme'] = THEME_OPTIONS.indexOf(theme);
     return init;
   });
 
@@ -128,9 +133,9 @@ export default function SettingsView({ selectedLine }: Props) {
     <div style={{
       width: '100%',
       height: '100%',
-      background: '#FAF8F3',
+      background: 'var(--bg)',
       fontFamily: 'Space Grotesk, sans-serif',
-      color: '#161512',
+      color: 'var(--text)',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
@@ -150,23 +155,23 @@ export default function SettingsView({ selectedLine }: Props) {
       <div style={{ flex: 1, overflowY: 'auto', padding: '16px 16px 16px' }}>
         {SECTIONS.map((sec) => (
           <div key={sec.head} style={{ marginBottom: 18 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.4px', color: 'rgba(0,0,0,0.45)', padding: '6px 8px 8px' }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.4px', color: 'var(--text-sub)', padding: '6px 8px 8px' }}>
               {sec.head}
             </div>
-            <div style={{ background: '#fff', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)' }}>
+            <div style={{ background: 'var(--surface)', borderRadius: 18, overflow: 'hidden', border: '1px solid var(--border)' }}>
               {sec.items.map((it, i) => (
                 <div
                   key={it.label}
                   style={{
                     padding: '13px 16px',
-                    borderBottom: i === sec.items.length - 1 ? 'none' : '1px solid rgba(0,0,0,0.05)',
+                    borderBottom: i === sec.items.length - 1 ? 'none' : '1px solid var(--border)',
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
                   }}
                 >
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ fontSize: 14.5, fontWeight: 600 }}>{it.label}</div>
                     {it.kind === 'toggle' && it.sub && (
-                      <div style={{ fontSize: 12, color: 'rgba(22,21,18,0.5)', marginTop: 2 }}>{it.sub}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 2 }}>{it.sub}</div>
                     )}
                   </div>
                   {it.kind === 'toggle' && (
@@ -179,9 +184,12 @@ export default function SettingsView({ selectedLine }: Props) {
                   {it.kind === 'segment' && (
                     <Segment
                       options={it.options}
-                      selectedIdx={segmentState[it.label] ?? it.defaultIdx}
+                      selectedIdx={it.label === 'Theme' ? THEME_OPTIONS.indexOf(theme) : (segmentState[it.label] ?? it.defaultIdx)}
                       color={line.color}
-                      onSelect={(idx) => setSegmentState((prev) => ({ ...prev, [it.label]: idx }))}
+                      onSelect={(idx) => {
+                        setSegmentState((prev) => ({ ...prev, [it.label]: idx }));
+                        if (it.label === 'Theme') setTheme(THEME_OPTIONS[idx]);
+                      }}
                     />
                   )}
                 </div>
@@ -191,7 +199,7 @@ export default function SettingsView({ selectedLine }: Props) {
         ))}
 
         {/* Version info */}
-        <div style={{ textAlign: 'center', padding: '8px 0 16px', color: 'rgba(0,0,0,0.3)', fontSize: 12, fontFamily: 'JetBrains Mono, monospace' }}>
+        <div style={{ textAlign: 'center', padding: '8px 0 16px', color: 'var(--text-dim)', fontSize: 12, fontFamily: 'JetBrains Mono, monospace' }}>
           Metro · Houston Light Rail · v1.0
         </div>
       </div>

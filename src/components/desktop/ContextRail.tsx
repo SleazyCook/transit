@@ -58,18 +58,18 @@ export default function ContextRail({ selectedLine, nearestStations }: Props) {
   return (
     <div style={{
       height: '100%',
-      borderLeft: '1px solid rgba(0,0,0,0.06)',
-      background: '#FAF8F3',
+      borderLeft: '1px solid var(--border)',
+      background: 'var(--bg)',
       overflowY: 'auto',
       fontFamily: 'Space Grotesk, sans-serif',
-      color: '#161512',
+      color: 'var(--text)',
     }}>
       <div style={{ padding: '24px 16px 24px' }}>
 
         {/* NEARBY */}
         {nearby.length > 0 && (
           <section style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.4)', marginBottom: 10 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-dim)', marginBottom: 10 }}>
               NEARBY
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -80,16 +80,16 @@ export default function ContextRail({ selectedLine, nearestStations }: Props) {
                     display: 'flex', alignItems: 'center', gap: 10,
                     padding: '10px 4px',
                     borderBottom: i < Math.min(nearby.length, 6) - 1
-                      ? '1px dashed rgba(0,0,0,0.08)'
+                      ? '1px dashed var(--border-dash)'
                       : 'none',
                   }}
                 >
                   <div style={{
                     width: 28, height: 28, borderRadius: 8,
-                    background: 'rgba(0,0,0,0.04)',
+                    background: 'var(--hover)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     flexShrink: 0,
-                    color: 'rgba(22,21,18,0.5)',
+                    color: 'var(--text-sub)',
                   }}>
                     <PinIcon />
                   </div>
@@ -97,7 +97,7 @@ export default function ContextRail({ selectedLine, nearestStations }: Props) {
                     <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {place}
                     </div>
-                    <div style={{ fontSize: 11, color: 'rgba(22,21,18,0.4)', fontFamily: 'JetBrains Mono, monospace', marginTop: 1 }}>
+                    <div style={{ fontSize: 11, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', marginTop: 1 }}>
                       ~{2 + i * 2} min walk
                     </div>
                   </div>
@@ -110,22 +110,22 @@ export default function ContextRail({ selectedLine, nearestStations }: Props) {
         {/* STATION FACTS */}
         {currentStation && (
           <section style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.4)', marginBottom: 10 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-dim)', marginBottom: 10 }}>
               STATION FACTS
             </div>
             <div style={{
-              background: '#fff',
+              background: 'var(--surface)',
               borderRadius: 14,
-              border: '1px solid rgba(0,0,0,0.05)',
+              border: '1px solid var(--border)',
               overflow: 'hidden',
             }}>
               {currentStation.bike_parking && (
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: 10,
                   padding: '12px 14px',
-                  borderBottom: '1px solid rgba(0,0,0,0.05)',
+                  borderBottom: '1px solid var(--border)',
                 }}>
-                  <span style={{ color: 'rgba(22,21,18,0.45)', flexShrink: 0 }}><BikeIcon /></span>
+                  <span style={{ color: 'var(--text-sub)', flexShrink: 0 }}><BikeIcon /></span>
                   <span style={{ fontSize: 13, fontWeight: 500 }}>Bike parking available</span>
                 </div>
               )}
@@ -133,15 +133,15 @@ export default function ContextRail({ selectedLine, nearestStations }: Props) {
                 <div style={{
                   display: 'flex', alignItems: 'flex-start', gap: 10,
                   padding: '12px 14px',
-                  borderBottom: '1px solid rgba(0,0,0,0.05)',
+                  borderBottom: '1px solid var(--border)',
                 }}>
-                  <span style={{ color: 'rgba(22,21,18,0.45)', flexShrink: 0, marginTop: 1 }}><MapPinIcon /></span>
+                  <span style={{ color: 'var(--text-sub)', flexShrink: 0, marginTop: 1 }}><MapPinIcon /></span>
                   <a
                     href={currentStation.address}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      fontSize: 13, fontWeight: 500, color: '#161512',
+                      fontSize: 13, fontWeight: 500, color: 'var(--text)',
                       textDecoration: 'none', lineHeight: 1.4,
                       overflow: 'hidden', textOverflow: 'ellipsis',
                       display: '-webkit-box',
@@ -157,7 +157,7 @@ export default function ContextRail({ selectedLine, nearestStations }: Props) {
                 display: 'flex', alignItems: 'center', gap: 10,
                 padding: '12px 14px',
               }}>
-                <span style={{ color: 'rgba(22,21,18,0.45)', flexShrink: 0 }}><ClockIcon /></span>
+                <span style={{ color: 'var(--text-sub)', flexShrink: 0 }}><ClockIcon /></span>
                 <span style={{ fontSize: 13, fontWeight: 500 }}>~8 min avg headway</span>
               </div>
             </div>
@@ -167,7 +167,7 @@ export default function ContextRail({ selectedLine, nearestStations }: Props) {
         {/* CONNECTIONS */}
         {connections.length > 0 && (
           <section>
-            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.4)', marginBottom: 10 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-dim)', marginBottom: 10 }}>
               CONNECTIONS
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -202,7 +202,7 @@ export default function ContextRail({ selectedLine, nearestStations }: Props) {
 
         {/* Empty state */}
         {!currentStation && (
-          <div style={{ color: 'rgba(0,0,0,0.35)', fontSize: 13, lineHeight: 1.5 }}>
+          <div style={{ color: 'var(--text-dim)', fontSize: 13, lineHeight: 1.5 }}>
             Waiting for your location to load station details…
           </div>
         )}

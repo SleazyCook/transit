@@ -47,9 +47,9 @@ export default function SavedView({ saved, onToggleSaved, onNavigateTo, selected
     <div style={{
       width: '100%',
       height: '100%',
-      background: '#FAF8F3',
+      background: 'var(--bg)',
       fontFamily: 'Space Grotesk, sans-serif',
-      color: '#161512',
+      color: 'var(--text)',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
@@ -68,8 +68,8 @@ export default function SavedView({ saved, onToggleSaved, onNavigateTo, selected
       {/* List */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '16px 16px 0' }}>
         {saved.length === 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 200, gap: 12, color: 'rgba(0,0,0,0.38)' }}>
-            <div style={{ color: 'rgba(0,0,0,0.2)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 200, gap: 12, color: 'var(--text-sub)' }}>
+            <div style={{ color: 'var(--text-faint)' }}>
               <svg width={40} height={40} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round">
                 <path d="M12 2.5l2.95 6 6.6.95-4.78 4.65 1.13 6.57L12 17.55l-5.9 3.12 1.13-6.57L2.45 9.45 9.05 8.5z"/>
               </svg>
@@ -90,10 +90,10 @@ export default function SavedView({ saved, onToggleSaved, onNavigateTo, selected
                 <div
                   key={s.line + s.stationName}
                   style={{
-                    background: '#fff',
+                    background: 'var(--surface)',
                     borderRadius: 18,
                     padding: '16px 18px',
-                    border: '1px solid rgba(0,0,0,0.05)',
+                    border: '1px solid var(--border)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 14,
@@ -117,7 +117,7 @@ export default function SavedView({ saved, onToggleSaved, onNavigateTo, selected
                     <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {shortLabel}
                     </div>
-                    <div style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)', marginTop: 3, display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 3, display: 'flex', alignItems: 'center', gap: 10 }}>
                       <span style={{ color: sc.color, fontWeight: 600 }}>{sc.name}</span>
                       {station?.bike_parking && (
                         <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
@@ -127,7 +127,7 @@ export default function SavedView({ saved, onToggleSaved, onNavigateTo, selected
                       )}
                     </div>
                     {station?.nearby && station.nearby.length > 0 && (
-                      <div style={{ fontSize: 11.5, color: 'rgba(0,0,0,0.38)', marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <div style={{ fontSize: 11.5, color: 'var(--text-sub)', marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
                         <PinIcon />
                         {station.nearby.slice(0, 2).join(' · ')}
                       </div>
@@ -144,7 +144,7 @@ export default function SavedView({ saved, onToggleSaved, onNavigateTo, selected
                     </button>
                     <button
                       onClick={() => onNavigateTo(s.line, s.stationName)}
-                      style={{ background: 'none', border: 'none', padding: 4, color: 'rgba(0,0,0,0.35)' }}
+                      style={{ background: 'none', border: 'none', padding: 4, color: 'var(--text-dim)' }}
                     >
                       <ArrowIcon />
                     </button>

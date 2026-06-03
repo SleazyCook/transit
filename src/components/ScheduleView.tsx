@@ -35,9 +35,9 @@ export default function ScheduleView({ nearestStations, selectedLine, onLineChan
     <div style={{
       width: '100%',
       height: '100%',
-      background: '#FAF8F3',
+      background: 'var(--bg)',
       fontFamily: 'Space Grotesk, sans-serif',
-      color: '#161512',
+      color: 'var(--text)',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
@@ -93,7 +93,7 @@ export default function ScheduleView({ nearestStations, selectedLine, onLineChan
       {/* Column headers */}
       <div style={{
         display: 'flex', padding: '12px 20px 6px',
-        fontSize: 11, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.45)',
+        fontSize: 11, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-dim)',
         flexShrink: 0,
       }}>
         <div style={{ flex: 1 }}>{line.direction1.toUpperCase()}</div>
@@ -111,13 +111,13 @@ export default function ScheduleView({ nearestStations, selectedLine, onLineChan
               style={{
                 display: 'flex', alignItems: 'center',
                 padding: '12px 8px',
-                borderBottom: '1px dashed rgba(0,0,0,0.07)',
+                borderBottom: '1px dashed var(--border-dash)',
                 background: isNow ? `${line.color}10` : 'transparent',
                 borderRadius: isNow ? 10 : 0,
               }}
             >
               <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, paddingRight: 12 }}>
-                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13.5, color: '#161512' }}>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13.5, color: 'var(--text)' }}>
                   {fmt(r.h, (r.m + 2) % 60)}
                 </span>
                 <span style={{ width: 5, height: 5, borderRadius: 999, background: line.color, opacity: 0.65 }}/>
@@ -127,7 +127,7 @@ export default function ScheduleView({ nearestStations, selectedLine, onLineChan
                   fontFamily: 'JetBrains Mono, monospace',
                   fontSize: isNow ? 17 : 14,
                   fontWeight: isNow ? 700 : 500,
-                  color: isNow ? line.color : '#161512',
+                  color: isNow ? line.color : 'var(--text)',
                   letterSpacing: '-0.3px',
                 }}>
                   {fmt(r.h, r.m)}
@@ -138,7 +138,7 @@ export default function ScheduleView({ nearestStations, selectedLine, onLineChan
               </div>
               <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8, paddingLeft: 12 }}>
                 <span style={{ width: 5, height: 5, borderRadius: 999, background: line.color, opacity: 0.65 }}/>
-                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13.5, color: '#161512' }}>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13.5, color: 'var(--text)' }}>
                   {fmt(r.h, (r.m + 3) % 60)}
                 </span>
               </div>

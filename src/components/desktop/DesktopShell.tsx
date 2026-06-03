@@ -33,7 +33,7 @@ export default function DesktopShell({
       display: 'grid',
       gridTemplateColumns: '260px 1fr 320px',
       overflow: 'hidden',
-      background: '#FAF8F3',
+      background: 'var(--bg)',
       fontFamily: 'Space Grotesk, sans-serif',
       position: 'relative',
     }}>

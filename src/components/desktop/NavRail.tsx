@@ -52,8 +52,8 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
   return (
     <div style={{
       height: '100%',
-      borderRight: '1px solid rgba(0,0,0,0.06)',
-      background: '#FAF8F3',
+      borderRight: '1px solid var(--border)',
+      background: 'var(--bg)',
       display: 'flex',
       flexDirection: 'column',
       overflowY: 'auto',
@@ -65,14 +65,14 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
-            background: '#161512',
+            background: 'var(--text)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: '#fff', fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px',
             flexShrink: 0,
           }}>
             M
           </div>
-          <span style={{ fontSize: 17, fontWeight: 700, color: '#161512', letterSpacing: '-0.3px' }}>
+          <span style={{ fontSize: 17, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.3px' }}>
             Metro
           </span>
         </div>
@@ -80,10 +80,10 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
         {/* Search — TODO: wire up station filtering */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 8,
-          background: 'rgba(0,0,0,0.04)',
+          background: 'var(--hover)',
           borderRadius: 10, padding: '8px 12px',
           marginBottom: 22,
-          color: 'rgba(22,21,18,0.4)',
+          color: 'var(--text-dim)',
         }}>
           <SearchIcon />
           <span style={{ fontSize: 13, fontWeight: 500 }}>Search stations</span>
@@ -91,7 +91,7 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
 
         {/* LINES */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.4)', marginBottom: 6, padding: '0 4px' }}>
+          <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-sub)', marginBottom: 6, padding: '0 4px' }}>
             LINES
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -120,14 +120,14 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
                     background: active ? '#fff' : cfg.color,
                     flexShrink: 0,
                   }} />
-                  <span style={{ flex: 1, fontSize: 14, fontWeight: 600, color: active ? '#fff' : '#161512' }}>
+                  <span style={{ flex: 1, fontSize: 14, fontWeight: 600, color: active ? '#fff' : 'var(--text)' }}>
                     {cfg.name}
                   </span>
                   <span style={{
                     fontFamily: 'JetBrains Mono, monospace',
                     fontSize: 11,
                     fontWeight: 500,
-                    color: active ? 'rgba(255,255,255,0.7)' : 'rgba(22,21,18,0.35)',
+                    color: active ? 'rgba(255,255,255,0.7)' : 'var(--text-dim)',
                   }}>
                     {count}
                   </span>
@@ -140,7 +140,7 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
         {/* SAVED */}
         {saved.length > 0 && (
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.4)', marginBottom: 6, padding: '0 4px' }}>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-sub)', marginBottom: 6, padding: '0 4px' }}>
               SAVED
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -156,7 +156,7 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
                       display: 'flex', alignItems: 'center', gap: 10,
                       padding: '9px 12px',
                       borderRadius: 10,
-                      background: isActive ? 'rgba(0,0,0,0.04)' : 'transparent',
+                      background: isActive ? 'var(--hover)' : 'transparent',
                       border: 'none',
                       cursor: 'pointer',
                       width: '100%',
@@ -168,7 +168,7 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
                       background: cfg.color,
                       flexShrink: 0,
                     }} />
-                    <span style={{ flex: 1, fontSize: 13, fontWeight: 500, color: '#161512', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <span style={{ flex: 1, fontSize: 13, fontWeight: 500, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {chipLabel}
                     </span>
                     <span style={{ color: cfg.color, flexShrink: 0 }}>
@@ -186,18 +186,18 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
 
         {/* Alert card */}
         <div style={{
-          background: 'rgba(0,0,0,0.04)',
+          background: 'var(--hover)',
           borderRadius: 12,
           padding: '12px 14px',
           display: 'flex', gap: 10, alignItems: 'flex-start',
           marginBottom: 12,
         }}>
-          <span style={{ color: 'rgba(22,21,18,0.5)', marginTop: 1, flexShrink: 0 }}>
+          <span style={{ color: 'var(--text-sub)', marginTop: 1, flexShrink: 0 }}>
             <BellIcon />
           </span>
           <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: '#161512', marginBottom: 2 }}>1 alert</div>
-            <div style={{ fontSize: 11.5, color: 'rgba(22,21,18,0.55)', lineHeight: 1.4 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 2 }}>1 alert</div>
+            <div style={{ fontSize: 11.5, color: 'var(--text-sub)', lineHeight: 1.4 }}>
               Minor delays expected on Green Line today.
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function NavRail({ selectedLine, onLineChange, saved, onPickSaved
             padding: '10px 12px', borderRadius: 10,
             background: 'transparent', border: 'none',
             cursor: 'pointer', width: '100%', textAlign: 'left',
-            color: 'rgba(22,21,18,0.55)',
+            color: 'var(--text-sub)',
           }}
         >
           <GearIcon />

@@ -1,5 +1,6 @@
 import { LINE_CONFIG } from '../../config/lines';
 import { useArrivals, etaSec } from '../../hooks/useArrivals';
+import { useTheme } from '../../context/ThemeContext';
 import HSchematic from '../HSchematic';
 import type { BaseLineName, LineName, LineResult } from '../../types';
 
@@ -41,14 +42,15 @@ export default function NowPanel({ selectedLine, nearestStations, isSaved, onTog
 
   const line = LINE_CONFIG[selectedLine];
   const isStationSaved = isSaved(selectedLine, stationName);
+  const { isDark } = useTheme();
 
   return (
     <div style={{
       height: '100%',
-      background: '#F6F3EE',
+      background: 'var(--bg)',
       overflowY: 'auto',
       fontFamily: 'Space Grotesk, sans-serif',
-      color: '#161512',
+      color: 'var(--text)',
     }}>
       <div style={{ padding: '24px 28px 28px', display: 'flex', flexDirection: 'column', gap: 16, minHeight: '100%', boxSizing: 'border-box' }}>
 
@@ -71,7 +73,7 @@ export default function NowPanel({ selectedLine, nearestStations, isSaved, onTog
               {walkTime !== null && (
                 <span style={{
                   display: 'flex', alignItems: 'center', gap: 5,
-                  fontSize: 13, color: 'rgba(22,21,18,0.5)', fontWeight: 500,
+                  fontSize: 13, color: 'var(--text-sub)', fontWeight: 500,
                 }}>
                   <WalkIcon /> {walkTime} min from you
                 </span>
@@ -93,9 +95,9 @@ export default function NowPanel({ selectedLine, nearestStations, isSaved, onTog
             <button
               onClick={() => onToggleSaved(selectedLine, stationName)}
               style={{
-                background: isStationSaved ? line.color : '#fff',
-                color: isStationSaved ? '#fff' : '#161512',
-                border: `1px solid ${isStationSaved ? line.color : 'rgba(0,0,0,0.1)'}`,
+                background: isStationSaved ? line.color : 'var(--surface)',
+                color: isStationSaved ? '#fff' : 'var(--text)',
+                border: `1px solid ${isStationSaved ? line.color : 'var(--border-med)'}`,
                 borderRadius: 9,
                 padding: '7px 9px',
                 cursor: 'pointer',
@@ -106,8 +108,8 @@ export default function NowPanel({ selectedLine, nearestStations, isSaved, onTog
             </button>
             <button
               style={{
-                background: '#161512',
-                color: '#fff',
+                background: 'var(--text)',
+                color: 'var(--bg)',
                 border: 'none',
                 borderRadius: 9,
                 padding: '8px 16px',
@@ -187,25 +189,25 @@ export default function NowPanel({ selectedLine, nearestStations, isSaved, onTog
 
           {/* Upcoming card */}
           <div style={{
-            background: '#fff',
+            background: 'var(--surface)',
             borderRadius: 18,
             padding: '16px 18px',
-            border: '1px solid rgba(0,0,0,0.05)',
+            border: '1px solid var(--border)',
             display: 'flex',
             flexDirection: 'column',
           }}>
             <div style={{
               fontSize: 10.5, fontWeight: 700, letterSpacing: '1px',
-              color: 'rgba(0,0,0,0.4)', marginBottom: 10,
+              color: 'var(--text-dim)', marginBottom: 10,
             }}>
               UPCOMING
             </div>
             {loading ? (
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(0,0,0,0.35)', fontSize: 13 }}>
+              <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)', fontSize: 13 }}>
                 Loading…
               </div>
             ) : allSorted.length === 0 ? (
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center', color: 'rgba(0,0,0,0.35)', fontSize: 13 }}>
+              <div style={{ flex: 1, display: 'flex', alignItems: 'center', color: 'var(--text-dim)', fontSize: 13 }}>
                 No upcoming arrivals.
               </div>
             ) : (
@@ -219,18 +221,18 @@ export default function NowPanel({ selectedLine, nearestStations, isSaved, onTog
                       style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         padding: '9px 0',
-                        borderBottom: i < Math.min(allSorted.length, 4) - 1 ? '1px solid rgba(0,0,0,0.05)' : 'none',
+                        borderBottom: i < Math.min(allSorted.length, 4) - 1 ? '1px solid var(--border)' : 'none',
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <div style={{ width: 8, height: 8, borderRadius: 999, background: line.color, flexShrink: 0 }} />
-                        <span style={{ fontSize: 13, fontWeight: 500, color: '#161512' }}>{dirLabel}</span>
+                        <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>{dirLabel}</span>
                       </div>
                       <div style={{
                         fontFamily: 'JetBrains Mono, monospace',
                         fontSize: 13.5,
                         fontWeight: 500,
-                        color: '#161512',
+                        color: 'var(--text)',
                       }}>
                         {sec < 30 ? 'Due' : Math.round(sec / 60) + ' min'}
                       </div>
@@ -244,20 +246,20 @@ export default function NowPanel({ selectedLine, nearestStations, isSaved, onTog
 
         {/* Schematic card */}
         <div style={{
-          background: '#fff',
+          background: 'var(--surface)',
           borderRadius: 18,
           padding: '16px 20px 20px',
-          border: '1px solid rgba(0,0,0,0.05)',
+          border: '1px solid var(--border)',
           flexShrink: 0,
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'rgba(0,0,0,0.4)' }}>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-dim)' }}>
               LIVE POSITION
             </div>
             <div style={{
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: 12,
-              color: 'rgba(0,0,0,0.35)',
+              color: 'var(--text-dim)',
             }}>
               {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </div>
@@ -268,12 +270,12 @@ export default function NowPanel({ selectedLine, nearestStations, isSaved, onTog
                 stations={stations}
                 currentIdx={stationIdx}
                 lineColor={line.color}
-                variant="light"
+                variant={isDark ? 'dark' : 'light'}
                 width={360}
               />
             </div>
           ) : (
-            <div style={{ height: 72, display: 'flex', alignItems: 'center', color: 'rgba(0,0,0,0.35)', fontSize: 13 }}>
+            <div style={{ height: 72, display: 'flex', alignItems: 'center', color: 'var(--text-dim)', fontSize: 13 }}>
               Station position unavailable.
             </div>
           )}

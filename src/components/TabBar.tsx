@@ -59,8 +59,8 @@ export default function TabBar({ active, onTabChange, accent = '#161512' }: TabB
       justifyContent: 'space-around',
       alignItems: 'center',
       padding: '10px 12px 22px',
-      background: '#fff',
-      borderTop: '1px solid rgba(0,0,0,0.06)',
+      background: 'var(--surface)',
+      borderTop: '1px solid var(--border)',
       flexShrink: 0,
     }}>
       {TABS.map(({ id, label, Icon }) => {
@@ -74,7 +74,7 @@ export default function TabBar({ active, onTabChange, accent = '#161512' }: TabB
               flexDirection: 'column',
               alignItems: 'center',
               gap: 3,
-              color: on ? accent : 'rgba(22,21,18,0.42)',
+              color: on ? accent : 'var(--text-dim)',
               padding: '4px 10px',
               background: 'none',
               border: 'none',
