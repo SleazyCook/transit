@@ -1,33 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import type { BaseLineName, LineName, LineResult, Station } from '../types';
+import type { BaseLineName, LineName, LineResult } from '../types';
 import { LINE_CONFIG } from '../config/lines';
 import type { SavedStation } from '../hooks/useSavedStations';
-
-import redline_stations from '../data/redline';
-import greenline_stations from '../data/greenline';
-import purpleline_stations from '../data/purpleline';
-
-const MIN_REFRESH_MS = 5000;
-
-const routeMap: Record<BaseLineName, string> = {
-  red: 'Ho414_4620_700',
-  green: 'Ho414_4620_800',
-  purple: 'Ho414_4620_900',
-};
-
-const burnettStops = {
-  direction1: 'Ho414_4620_25033',
-  direction2: 'Ho414_4620_25034',
-};
-
-const allLineStations: Record<BaseLineName, Station[]> = {
-  red: redline_stations,
-  green: greenline_stations,
-  purple: purpleline_stations,
-};
-
-type ArrivalEntry = { ArrivalId: string; ArrivalTime: string };
-type ArrivalsData = { direction1: ArrivalEntry[]; direction2: ArrivalEntry[] };
+import { useArrivals, allLineStations, etaSec, fmtEta } from '../hooks/useArrivals';
+import HSchematic from './HSchematic';
 
 type Props = {
   nearestStations: Record<LineName, LineResult> | null;
@@ -38,23 +13,6 @@ type Props = {
   saved: SavedStation[];
   onPickSaved: (line: BaseLineName, name: string) => void;
 };
-
-function etaSec(arrivalTime: string) {
-  return Math.max(0, Math.floor((new Date(arrivalTime).getTime() - Date.now()) / 1000));
-}
-
-function fmtEta(sec: number) {
-  if (sec < 30) return 'Due';
-  if (sec < 90) return 'Arriving';
-  return Math.round(sec / 60) + ' min';
-}
-
-function fmtCountdown(sec: number) {
-  if (sec < 30) return { big: 'DUE', small: '' };
-  const m = Math.floor(sec / 60);
-  const s = String(Math.floor(sec % 60)).padStart(2, '0');
-  return { big: String(m), small: `MIN ${s}s` };
-}
 
 function StarIcon({ filled }: { filled: boolean }) {
   return (
@@ -81,59 +39,6 @@ function SwapIcon() {
   );
 }
 
-function HSchematic({
-  stations,
-  currentIdx,
-  lineColor,
-}: {
-  stations: Station[];
-  currentIdx: number;
-  lineColor: string;
-}) {
-  const range = 3;
-  const start = Math.max(0, Math.min(stations.length - 7, currentIdx - range));
-  const visible = stations.slice(start, start + 7);
-  const width = 340;
-  const height = 72;
-  const stepX = visible.length > 1 ? width / (visible.length - 1) : width / 2;
-  const y = height / 2;
-
-  return (
-    <svg width={width} height={height} style={{ display: 'block', overflow: 'visible' }}>
-      <line x1="0" y1={y} x2={width} y2={y} stroke="rgba(255,255,255,0.2)" strokeWidth="3"/>
-      <line x1="0" y1={y} x2={width} y2={y} stroke="rgba(255,255,255,0.5)" strokeWidth="2.5" strokeDasharray="6 6"/>
-      {visible.map((s, i) => {
-        const x = i * stepX;
-        const isCurrent = start + i === currentIdx;
-        const shortLabel = s.name.split('/')[0].split(' ').slice(0, 2).join(' ');
-        return (
-          <g key={s.name + i}>
-            <circle
-              cx={x} cy={y}
-              r={isCurrent ? 10 : 5}
-              fill={isCurrent ? '#fff' : 'rgba(255,255,255,0.45)'}
-              stroke="rgba(255,255,255,0.85)"
-              strokeWidth={isCurrent ? 3 : 2}
-            />
-            {isCurrent && <circle cx={x} cy={y} r={4} fill={lineColor}/>}
-            <text
-              x={x}
-              y={isCurrent ? y - 17 : y + 21}
-              textAnchor="middle"
-              fontSize={isCurrent ? 11 : 9}
-              fontWeight={isCurrent ? 700 : 500}
-              fontFamily="Space Grotesk, sans-serif"
-              fill={isCurrent ? '#fff' : 'rgba(255,255,255,0.6)'}
-            >
-              {shortLabel}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
 export default function ArrivalsScreen({
   nearestStations,
   selectedLine,
@@ -143,97 +48,19 @@ export default function ArrivalsScreen({
   saved,
   onPickSaved,
 }: Props) {
-  const [arrivals, setArrivals] = useState<ArrivalsData>({ direction1: [], direction2: [] });
-  const [loading, setLoading] = useState(true);
-  const [tick, setTick] = useState(0);
-
-  // Tick every second to update countdowns
-  useEffect(() => {
-    const id = setInterval(() => setTick((t) => t + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  const stationName = nearestStations
-    ? nearestStations[selectedLine].station.name
-    : 'Burnett Transit Center / Casa de Amigos';
-
-  const walkTime = nearestStations
-    ? nearestStations[selectedLine].walkTime
-    : null;
-
-  const currentStation = nearestStations
-    ? nearestStations[selectedLine].station
-    : null;
-
-  const stations = allLineStations[selectedLine];
-  const stationIdx = stations.findIndex((s) => s.name === stationName);
-
-  const fetchArrivals = useCallback(async () => {
-    setLoading(true);
-    try {
-      let stop1: string;
-      let stop2: string;
-      let routeId: string;
-
-      if (!nearestStations) {
-        stop1 = burnettStops.direction1;
-        stop2 = burnettStops.direction2;
-        routeId = routeMap.red;
-      } else {
-        const station = nearestStations[selectedLine].station;
-        if (!station.direction_1_id || !station.direction_2_id) {
-          throw new Error('Station missing stop IDs');
-        }
-        stop1 = station.direction_1_id;
-        stop2 = station.direction_2_id;
-        routeId = routeMap[selectedLine];
-      }
-
-      const res = await fetch(
-        `/.netlify/functions/arrivals?stop1=${stop1}&stop2=${stop2}&routeId=${routeId}`
-      );
-      const data: ArrivalsData = await res.json();
-      setArrivals(data);
-
-      const allTimes = [...data.direction1, ...data.direction2].map((a) =>
-        new Date(a.ArrivalTime).getTime()
-      );
-      const nextRefresh =
-        allTimes.length > 0
-          ? Math.max(Math.min(...allTimes) - Date.now(), MIN_REFRESH_MS)
-          : 15000;
-      setTimeout(fetchArrivals, nextRefresh);
-    } catch {
-      setTimeout(fetchArrivals, 60000);
-    } finally {
-      setLoading(false);
-    }
-  }, [selectedLine, nearestStations]);
-
-  useEffect(() => {
-    fetchArrivals();
-  }, [fetchArrivals]);
+  const {
+    loading,
+    allSorted,
+    countdown,
+    nextDirLabel,
+    stationName,
+    walkTime,
+    currentStation,
+    stationIdx,
+    stations,
+  } = useArrivals(selectedLine, nearestStations);
 
   const line = LINE_CONFIG[selectedLine];
-
-  // Build sorted upcoming list
-  const allSorted = [
-    ...arrivals.direction1.map((a) => ({ ...a, dir: 'd1' as const })),
-    ...arrivals.direction2.map((a) => ({ ...a, dir: 'd2' as const })),
-  ].sort((a, b) => new Date(a.ArrivalTime).getTime() - new Date(b.ArrivalTime).getTime());
-
-  // Next train
-  const next = allSorted[0];
-  const nextSec = next ? etaSec(next.ArrivalTime) : 0;
-  void tick; // consumed to trigger re-render each second
-
-  const countdown = fmtCountdown(nextSec);
-  const nextDirLabel = next
-    ? next.dir === 'd1'
-      ? line.direction1
-      : line.direction2
-    : '';
-
   const isStationSaved = isSaved(selectedLine, stationName);
 
   return (
@@ -263,7 +90,6 @@ export default function ArrivalsScreen({
         }}>
           <div>{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            {/* Line selector dots */}
             {(['red', 'green', 'purple'] as BaseLineName[]).map((k) => (
               <button
                 key={k}
@@ -381,7 +207,7 @@ export default function ArrivalsScreen({
               </div>
             </div>
           )}
-          {!loading && !countdown.small && next && (
+          {!loading && !countdown.small && nextDirLabel && (
             <div style={{ fontSize: 11.5, fontWeight: 600, letterSpacing: '0.8px', opacity: 0.75, paddingBottom: 6 }}>
               · {nextDirLabel.toUpperCase()}
             </div>
@@ -395,6 +221,7 @@ export default function ArrivalsScreen({
               stations={stations}
               currentIdx={stationIdx}
               lineColor={line.color}
+              variant="dark"
             />
           </div>
         )}
