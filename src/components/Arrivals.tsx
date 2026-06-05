@@ -343,9 +343,42 @@ export default function ArrivalsScreen({
       {/* ── Upcoming list ── */}
       <div style={{ flex: 1, padding: '16px 16px 0', overflowY: 'auto' }}>
         {loading ? (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 100, color: 'var(--text-dim)', fontSize: 14, fontWeight: 500 }}>
-            Loading arrivals…
-          </div>
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 4px 12px' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1px', color: 'var(--text-dim)' }}>UPCOMING</div>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.4px', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <SwapIcon /> BOTH WAYS
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {[52, 72, 60, 68, 56].map((w, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: 'var(--surface)',
+                    borderRadius: 14,
+                    padding: '14px 16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    border: '1px solid var(--border)',
+                    boxShadow: i === 0
+                      ? `inset 4px 0 0 ${line.color}40`
+                      : `inset 3px 0 0 ${line.color}20`,
+                  }}
+                >
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <div className="skeleton" style={{ height: 10, width: 48 }} />
+                    <div className="skeleton" style={{ height: 14, width: w }} />
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                    <div className="skeleton" style={{ height: 26, width: 28, borderRadius: 4 }} />
+                    <div className="skeleton" style={{ height: 10, width: 22 }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         ) : (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 4px 12px' }}>

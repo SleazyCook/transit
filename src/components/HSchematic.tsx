@@ -19,7 +19,9 @@ export default function HSchematic({
 }: Props) {
   const range = 3;
   const start = Math.max(0, Math.min(stations.length - 7, currentIdx - range));
-  const visible = stations.slice(start, start + 7);
+  // Reversed so south (high index) is left, north (low index) is right
+  const visible = stations.slice(start, start + 7).reverse();
+  const visibleCount = visible.length;
   const height = 72;
   const stepX = visible.length > 1 ? width / (visible.length - 1) : width / 2;
   const y = height / 2;
@@ -40,7 +42,7 @@ export default function HSchematic({
       <line x1="0" y1={y} x2={width} y2={y} stroke={trackDash} strokeWidth="2.5" strokeDasharray="6 6" />
       {visible.map((s, i) => {
         const x = i * stepX;
-        const globalIdx = start + i;
+        const globalIdx = start + (visibleCount - 1 - i);
         const isCurrent = globalIdx === currentIdx;
         const shortLabel = s.name.split('/')[0].split(' ').slice(0, 2).join(' ');
         const clickable = onStationClick && !isCurrent;

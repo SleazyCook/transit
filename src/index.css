@@ -45,6 +45,18 @@ html, body {
   overflow: hidden;
 }
 
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--muted) 25%, var(--border-med) 50%, var(--muted) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 4px;
+}
+
 body {
   font-family: 'Space Grotesk', system-ui, sans-serif;
   background: var(--bg);
