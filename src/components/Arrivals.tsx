@@ -100,8 +100,8 @@ export default function ArrivalsScreen({
   const line = LINE_CONFIG[selectedLine];
   const isStationSaved = isSaved(selectedLine, stationName);
   const isManual = overrideStationIdx !== null;
-  const canGoPrev = stationIdx > 0;
-  const canGoNext = stationIdx < stations.length - 1;
+  const canGoPrev = stationIdx < stations.length - 1;  // left = south = higher index
+  const canGoNext = stationIdx > 0;                     // right = north = lower index
 
   const handleRefresh = () => {
     setOverrideStationIdx(null);
@@ -110,11 +110,11 @@ export default function ArrivalsScreen({
   };
 
   const handlePrevStation = () => {
-    if (canGoPrev) setOverrideStationIdx(stationIdx - 1);
+    if (canGoPrev) setOverrideStationIdx(stationIdx + 1);
   };
 
   const handleNextStation = () => {
-    if (canGoNext) setOverrideStationIdx(stationIdx + 1);
+    if (canGoNext) setOverrideStationIdx(stationIdx - 1);
   };
 
   return (
@@ -267,26 +267,19 @@ export default function ArrivalsScreen({
           </div>
         </div>
 
-        {/* Big countdown */}
+        {/* Big countdown — always rendered at fixed size to prevent layout shift */}
         <div style={{ padding: '18px 20px 0', display: 'flex', alignItems: 'baseline', gap: 12 }}>
-          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 80, fontWeight: 500, lineHeight: 0.9, letterSpacing: '-3px' }}>
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 80, fontWeight: 500, lineHeight: 0.9, letterSpacing: '-3px', minWidth: '2ch' }}>
             {loading ? '–' : countdown.big}
           </div>
-          {!loading && countdown.small && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0, paddingBottom: 6 }}>
-              <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 19, fontWeight: 500, opacity: 0.85, letterSpacing: '-0.3px' }}>
-                {countdown.small}
-              </div>
-              <div style={{ fontSize: 11.5, fontWeight: 600, letterSpacing: '0.8px', opacity: 0.75, marginTop: 4 }}>
-                NEXT · {nextDirLabel.toUpperCase()}
-              </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 0, paddingBottom: 6, visibility: loading ? 'hidden' : 'visible' }}>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 19, fontWeight: 500, opacity: countdown.small ? 0.85 : 0, letterSpacing: '-0.3px' }}>
+              {countdown.small || 'MIN 00s'}
             </div>
-          )}
-          {!loading && !countdown.small && nextDirLabel && (
-            <div style={{ fontSize: 11.5, fontWeight: 600, letterSpacing: '0.8px', opacity: 0.75, paddingBottom: 6 }}>
-              · {nextDirLabel.toUpperCase()}
+            <div style={{ fontSize: 11.5, fontWeight: 600, letterSpacing: '0.8px', opacity: 0.75, marginTop: 4 }}>
+              NEXT · {nextDirLabel ? nextDirLabel.toUpperCase() : '–'}
             </div>
-          )}
+          </div>
         </div>
 
         {/* Horizontal schematic with station navigation */}
