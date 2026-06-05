@@ -18,6 +18,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabId>('now');
   const [nearestStations, setNearestStations] = useState<Record<LineName, LineResult> | null>(null);
   const [selectedLine, setSelectedLine] = useState<BaseLineName>('red');
+  const [locationRefreshKey, setLocationRefreshKey] = useState(0);
   const { saved, isSaved, toggle } = useSavedStations();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
 
@@ -39,7 +40,7 @@ function App() {
 
   return (
     <>
-      <NearestStation onClosestChange={handleClosestChange} />
+      <NearestStation onClosestChange={handleClosestChange} refreshKey={locationRefreshKey} />
 
       {isDesktop ? (
         <DesktopShell
@@ -63,6 +64,7 @@ function App() {
                 onToggleSaved={toggle}
                 saved={saved}
                 onPickSaved={handlePickSaved}
+                onRefreshLocation={() => setLocationRefreshKey((k) => k + 1)}
               />
             )}
             {activeTab === 'schedule' && (

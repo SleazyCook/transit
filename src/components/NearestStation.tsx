@@ -8,9 +8,10 @@ import type { LineName, LineResult, Station } from "../types";
 
 type NearestStationProps = {
   onClosestChange?: (results: Record<LineName, LineResult>) => void;
+  refreshKey?: number;
 };
 
-const NearestStation = ({ onClosestChange }: NearestStationProps) => {
+const NearestStation = ({ onClosestChange, refreshKey }: NearestStationProps) => {
   const [userLocation, setUserLocation] = useState<{
     lat: number;
     lng: number;
@@ -35,7 +36,7 @@ const NearestStation = ({ onClosestChange }: NearestStationProps) => {
         }),
       () => {}
     );
-  }, []);
+  }, [refreshKey]);
 
 
   // -------------------------

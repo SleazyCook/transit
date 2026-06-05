@@ -50,6 +50,7 @@ export function fmtCountdown(sec: number) {
 export function useArrivals(
   selectedLine: BaseLineName,
   nearestStations: Record<LineName, LineResult> | null,
+  overrideStationIdx: number | null = null,
 ) {
   const [arrivals, setArrivals] = useState<ArrivalsData>({ direction1: [], direction2: [] });
   const [loading, setLoading] = useState(true);
@@ -60,17 +61,21 @@ export function useArrivals(
     return () => clearInterval(id);
   }, []);
 
-  const stationName = nearestStations
-    ? nearestStations[selectedLine].station.name
-    : 'Burnett Transit Center / Casa de Amigos';
-
-  const walkTime = nearestStations ? nearestStations[selectedLine].walkTime : null;
-  const currentStation: Station | null = nearestStations
-    ? nearestStations[selectedLine].station
-    : null;
-
   const stations = allLineStations[selectedLine];
-  const stationIdx = stations.findIndex((s) => s.name === stationName);
+
+  const stationIdx = (() => {
+    if (overrideStationIdx != null && stations[overrideStationIdx]) {
+      return overrideStationIdx;
+    }
+    if (nearestStations) {
+      return stations.findIndex((s) => s.name === nearestStations[selectedLine].station.name);
+    }
+    return stations.findIndex((s) => s.name === 'Burnett Transit Center / Casa de Amigos');
+  })();
+
+  const currentStation: Station | null = stationIdx >= 0 ? stations[stationIdx] : null;
+  const stationName = currentStation?.name ?? 'Burnett Transit Center / Casa de Amigos';
+  const walkTime = overrideStationIdx != null ? null : (nearestStations ? nearestStations[selectedLine].walkTime : null);
 
   const fetchArrivals = useCallback(async () => {
     setLoading(true);
@@ -79,7 +84,14 @@ export function useArrivals(
       let stop2: string;
       let routeId: string;
 
-      if (!nearestStations) {
+      const lineStations = allLineStations[selectedLine];
+      const overrideStation = overrideStationIdx != null ? lineStations[overrideStationIdx] : null;
+
+      if (overrideStation?.direction_1_id && overrideStation?.direction_2_id) {
+        stop1 = overrideStation.direction_1_id;
+        stop2 = overrideStation.direction_2_id;
+        routeId = routeMap[selectedLine];
+      } else if (!nearestStations) {
         stop1 = burnettStops.direction1;
         stop2 = burnettStops.direction2;
         routeId = routeMap.red;
@@ -112,7 +124,7 @@ export function useArrivals(
     } finally {
       setLoading(false);
     }
-  }, [selectedLine, nearestStations]);
+  }, [selectedLine, nearestStations, overrideStationIdx]);
 
   useEffect(() => {
     fetchArrivals();
@@ -138,6 +150,7 @@ export function useArrivals(
 
   return {
     loading,
+    fetchArrivals,
     allSorted,
     next,
     nextSec,

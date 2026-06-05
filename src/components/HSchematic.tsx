@@ -6,6 +6,7 @@ type Props = {
   lineColor: string;
   variant?: 'dark' | 'light';
   width?: number;
+  onStationClick?: (globalIdx: number) => void;
 };
 
 export default function HSchematic({
@@ -14,6 +15,7 @@ export default function HSchematic({
   lineColor,
   variant = 'dark',
   width = 340,
+  onStationClick,
 }: Props) {
   const range = 3;
   const start = Math.max(0, Math.min(stations.length - 7, currentIdx - range));
@@ -38,10 +40,18 @@ export default function HSchematic({
       <line x1="0" y1={y} x2={width} y2={y} stroke={trackDash} strokeWidth="2.5" strokeDasharray="6 6" />
       {visible.map((s, i) => {
         const x = i * stepX;
-        const isCurrent = start + i === currentIdx;
+        const globalIdx = start + i;
+        const isCurrent = globalIdx === currentIdx;
         const shortLabel = s.name.split('/')[0].split(' ').slice(0, 2).join(' ');
+        const clickable = onStationClick && !isCurrent;
         return (
-          <g key={s.name + i}>
+          <g
+            key={s.name + i}
+            onClick={clickable ? () => onStationClick(globalIdx) : undefined}
+            style={{ cursor: clickable ? 'pointer' : 'default' }}
+          >
+            {/* Enlarged transparent hit area for touch */}
+            {clickable && <circle cx={x} cy={y} r={22} fill="transparent" />}
             <circle
               cx={x} cy={y}
               r={isCurrent ? 10 : 5}

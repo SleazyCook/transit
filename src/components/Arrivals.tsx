@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import type { BaseLineName, LineName, LineResult } from '../types';
 import { LINE_CONFIG } from '../config/lines';
 import type { SavedStation } from '../hooks/useSavedStations';
@@ -12,6 +13,7 @@ type Props = {
   onToggleSaved: (line: BaseLineName, name: string) => void;
   saved: SavedStation[];
   onPickSaved: (line: BaseLineName, name: string) => void;
+  onRefreshLocation: () => void;
 };
 
 function StarIcon({ filled }: { filled: boolean }) {
@@ -39,6 +41,33 @@ function SwapIcon() {
   );
 }
 
+function RefreshIcon() {
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+      <path d="M21 3v5h-5"/>
+      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+      <path d="M3 21v-5h5"/>
+    </svg>
+  );
+}
+
+function ChevronLeft() {
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 18l6-6-6-6"/>
+    </svg>
+  );
+}
+
 export default function ArrivalsScreen({
   nearestStations,
   selectedLine,
@@ -47,9 +76,17 @@ export default function ArrivalsScreen({
   onToggleSaved,
   saved,
   onPickSaved,
+  onRefreshLocation,
 }: Props) {
+  const [overrideStationIdx, setOverrideStationIdx] = useState<number | null>(null);
+
+  // Clear override when line or nearest station changes
+  useEffect(() => { setOverrideStationIdx(null); }, [selectedLine]);
+  useEffect(() => { setOverrideStationIdx(null); }, [nearestStations]);
+
   const {
     loading,
+    fetchArrivals,
     allSorted,
     countdown,
     nextDirLabel,
@@ -58,10 +95,27 @@ export default function ArrivalsScreen({
     currentStation,
     stationIdx,
     stations,
-  } = useArrivals(selectedLine, nearestStations);
+  } = useArrivals(selectedLine, nearestStations, overrideStationIdx);
 
   const line = LINE_CONFIG[selectedLine];
   const isStationSaved = isSaved(selectedLine, stationName);
+  const isManual = overrideStationIdx !== null;
+  const canGoPrev = stationIdx > 0;
+  const canGoNext = stationIdx < stations.length - 1;
+
+  const handleRefresh = () => {
+    setOverrideStationIdx(null);
+    onRefreshLocation();
+    fetchArrivals();
+  };
+
+  const handlePrevStation = () => {
+    if (canGoPrev) setOverrideStationIdx(stationIdx - 1);
+  };
+
+  const handleNextStation = () => {
+    if (canGoNext) setOverrideStationIdx(stationIdx + 1);
+  };
 
   return (
     <div style={{
@@ -120,16 +174,37 @@ export default function ArrivalsScreen({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px 10px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 600, opacity: 0.85, letterSpacing: '0.5px' }}>
             <LocIcon />
-            <span>NEAREST{walkTime ? ` · ${walkTime} MIN WALK` : ''}</span>
+            {isManual
+              ? <span>STATION {stationIdx + 1} OF {stations.length}</span>
+              : <span>NEAREST{walkTime ? ` · ${walkTime} MIN WALK` : ''}</span>
+            }
           </div>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '4px 10px', borderRadius: 999,
-            background: 'rgba(255,255,255,0.15)',
-            fontSize: 11.5, fontWeight: 600, letterSpacing: '0.4px',
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: 999, background: '#7BFFB3', boxShadow: '0 0 8px #7BFFB3' }}/>
-            LIVE
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              onClick={handleRefresh}
+              title="Refresh location & arrivals"
+              style={{
+                color: '#fff',
+                background: 'none',
+                border: 'none',
+                padding: 4,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                opacity: 0.8,
+              }}
+            >
+              <RefreshIcon />
+            </button>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '4px 10px', borderRadius: 999,
+              background: 'rgba(255,255,255,0.15)',
+              fontSize: 11.5, fontWeight: 600, letterSpacing: '0.4px',
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: 999, background: '#7BFFB3', boxShadow: '0 0 8px #7BFFB3' }}/>
+              LIVE
+            </div>
           </div>
         </div>
 
@@ -214,15 +289,60 @@ export default function ArrivalsScreen({
           )}
         </div>
 
-        {/* Horizontal schematic */}
+        {/* Horizontal schematic with station navigation */}
         {stationIdx >= 0 && (
-          <div style={{ padding: '14px 20px 0', overflow: 'hidden' }}>
-            <HSchematic
-              stations={stations}
-              currentIdx={stationIdx}
-              lineColor={line.color}
-              variant="dark"
-            />
+          <div style={{ padding: '14px 20px 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <button
+              onClick={handlePrevStation}
+              disabled={!canGoPrev}
+              style={{
+                color: '#fff',
+                background: 'rgba(255,255,255,0.15)',
+                border: 'none',
+                borderRadius: 999,
+                width: 28,
+                height: 28,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: canGoPrev ? 'pointer' : 'default',
+                opacity: canGoPrev ? 1 : 0.25,
+                flexShrink: 0,
+                padding: 0,
+              }}
+            >
+              <ChevronLeft />
+            </button>
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              <HSchematic
+                stations={stations}
+                currentIdx={stationIdx}
+                lineColor={line.color}
+                variant="dark"
+                onStationClick={setOverrideStationIdx}
+              />
+            </div>
+            <button
+              onClick={handleNextStation}
+              disabled={!canGoNext}
+              style={{
+                color: '#fff',
+                background: 'rgba(255,255,255,0.15)',
+                border: 'none',
+                borderRadius: 999,
+                width: 28,
+                height: 28,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: canGoNext ? 'pointer' : 'default',
+                opacity: canGoNext ? 1 : 0.25,
+                flexShrink: 0,
+                padding: 0,
+              }}
+            >
+              <ChevronRight />
+            </button>
           </div>
         )}
       </div>
